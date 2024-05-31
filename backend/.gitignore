@@ -1,1 +1,6 @@
+.env
+db.js
+app.js
+package.json
 node_modules
+package-lock.json
