@@ -1,6 +1,7 @@
 import { CiUser, CiLock } from "react-icons/ci";
 import { Link } from 'react-router-dom';
-import '../Register/Register.css';
+// import '../Register/Register.css';
+import './Login.css'
 
 const Login = () => {
     
@@ -12,7 +13,7 @@ const Login = () => {
 
     return (
         <div className="wrapper">
-            <div className='from-box login'>
+            <div className='from-box login'> 
                 <form onSubmit={loginSubmitHandler}>
                     <h1>Login</h1>
                     <div className='input-box'>
@@ -25,21 +26,24 @@ const Login = () => {
                         <CiLock className='icon' />
                     </div>
 
-                    <button type="submit">Login</button>
+                    
                 </form>
 
-                <div className='register-link'>
+                {/* <div className='register-link'>
                     <Link to="/register">
                         <button type="button">Don&apos;t have an account?</button>
                     </Link>
-                </div>
+                </div> */}
                 <div className="Remember-forgot">
-                    <label>Remember</label>
+                    
                     <input type="checkbox" />
+                    <label>Remember</label><br>
+                    </br>
                     <Link to="/forgot-password">
                         <button type="button">Forgot Password?</button>
                     </Link>
                 </div>
+                <button type="submit" className="btn">Login</button>
             </div>
             
         </div>

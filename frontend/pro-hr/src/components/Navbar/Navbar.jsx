@@ -10,10 +10,10 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <div className="link-style-div">
+      {/* <div className="link-style-div">
         <Link to="/login" className="link-style">Login</Link>
         <Link to="/register" className="link-style">Register</Link>
-      </div>
+      </div> */}
     </div>
   )
 }
