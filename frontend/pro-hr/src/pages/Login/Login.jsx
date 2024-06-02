@@ -1,14 +1,26 @@
 import { CiUser, CiLock } from "react-icons/ci";
 import { Link } from 'react-router-dom';
+import axios from "axios"
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 // import '../Register/Register.css';
 import './Login.css'
 
 const Login = () => {
     
-
-
-    const loginSubmitHandler = () => {
+    const [details,setdetails]=useState({
+        username:"",
+        password:""
+    })
+    const nav = useNavigate()
+    const loginSubmitHandler = (e) => {
         // write logic here to submit form to backend.
+        e.preventDefault()
+        axios.post("http://localhost:5001/api/login",details)
+        .then(res=>{alert(res.data.message)
+            nav("/dashboard",{state:{id:res.data.result}})
+        })
+        .catch(err=>alert(err.request.responseText))
     };
 
     return (
@@ -17,17 +29,17 @@ const Login = () => {
                 <form onSubmit={loginSubmitHandler}>
                     <h1>Login</h1>
                     <div className='input-box'>
-                        <input type="text" placeholder='Enter your username' required />
+                        <input type="text" placeholder='Enter your username' onChange={(e)=>setdetails({...details,username:e.target.value})} required />
                         <CiUser className='icon' />
                     </div>
                     <div className='input-box'>
                         <input type="password" 
-                        placeholder='Enter your password' required />
+                        placeholder='Enter your password' onChange={(e)=>setdetails({...details,password:e.target.value})} required />
                         <CiLock className='icon' />
                     </div>
 
                     
-                </form>
+                
 
                 {/* <div className='register-link'>
                     <Link to="/register">
@@ -44,6 +56,7 @@ const Login = () => {
                     </Link>
                 </div>
                 <button type="submit" className="btn">Login</button>
+                </form>
             </div>
             
         </div>
