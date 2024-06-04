@@ -9,30 +9,28 @@ import EmployeeDetails from './components/EmployeeDetails';
 // import AttendanceTracking from './components/AttendanceTracking';
 // import SalaryCalculation from './components/SalaryCalculation';
 // import SalarySlipGeneration from './components/SalarySlipGeneration';
+import Welcome from './pages/Dashboard/welcome';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
-
   return (
-    <>
+    <AuthProvider>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-
-        <Route path="/" element={<Login />} />
-        {/* <Route path="/register" element={<Register />} /> */}
-
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/dashboard" element={<Dashboard />}>
+          <Route path="" element={<Welcome />} />
           <Route path="add-employee" element={<AddEmployee />} />
           <Route path="employee-details" element={<EmployeeDetails />} />
           {/* <Route path="attendance-tracking" element={<AttendanceTracking />} />
           <Route path="salary-calculation" element={<SalaryCalculation />} />
           <Route path="salary-slip-generation" element={<SalarySlipGeneration />} /> */}
         </Route>
-      </Routes>   
-    </>
-  )
+      </Routes>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;

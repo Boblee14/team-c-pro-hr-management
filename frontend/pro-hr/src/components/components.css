@@ -22,7 +22,11 @@
     border: none;
     border-radius: 5px;
 }
+
+.login-nav:hover {
+  background-color:#306aa4;
   
+}
 
 
 /* components.css */
