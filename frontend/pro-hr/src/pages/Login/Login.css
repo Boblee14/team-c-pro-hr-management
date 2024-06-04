@@ -1,0 +1,87 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #c3d1d7;
+    margin: auto;
+    margin-top: 100px !important;
+    width: 500px;
+    min-height: 400px;
+    border-radius: 10px;
+}
+
+.from-box {
+    width: 350px;
+    border-radius: 10px;
+    padding: 40px;
+  
+}
+
+form h1 {
+    font-size: 28px;
+    color: #2c2c2c;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 20px;
+   
+}
+
+.input-box input {
+    width: calc(100% - 40px);
+    height: 40px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    outline: none;
+    color: black;
+    background-color:#FFF;
+    border-color: black;
+    
+}
+
+.input-box .icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: black;
+}
+
+.Remember-forgot {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.Remember-forgot label {
+    color: #2c2c2c;
+    
+}
+
+.Remember-forgot button {
+    background-color: transparent;
+    border: none;
+    color: #2c2c2c;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-left:140px;
+    
+}
+
+.Remember-forgot button:hover{
+    color: #257cf7;
+}
+
+.btn {
+    padding: 10px 15px 10px 15px;
+    margin-top:20px !important;
+    margin-left:150px;
+    border-radius: 5px;
+    border-color: white;
+    background-color: #2c2c2c;
+    border: none;
+}
