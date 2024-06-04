@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .wrapper {
     display: flex;
     justify-content: center;
@@ -84,4 +85,111 @@ form h1 {
     border-color: white;
     background-color: #2c2c2c;
     border: none;
+=======
+ .wrapper{
+    height: 500px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+ }
+
+
+   .wrapper.active.from-box.Login{
+       transition: translate .18s ease;
+       translate: 0;
+   }
+   .wrapper.active.from-box.login{
+       transition: none;
+       translate: -400px;
+   }
+   .wrapper.from-box register{
+       position: absolute;
+       transition: none;
+       translate: 400px;   
+   }
+   .wrapper.active.from-box.register{
+       transition: translate .18s ease;
+       translate: 0;
+   }
+   .input-box input::placeholder {
+    color: #fff;
+}
+
+.from-box{
+    margin: 0 auto;
+    width: 40%;
+    background-color: seagreen;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    color:#fff;
+    padding: 50px 0;
+}
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .1);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #fff;
+    padding:  20px 45px 20px 20px;
+}
+
+.input-box input::placeholder {
+    color: #fff;
+}
+
+.input-box .icon{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    translate: 0 -50%;
+    font-size: 16px;
+}
+
+form h1{
+    font-size: 36px;
+    text-align: center;
+}
+form .input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+
+.btn{
+    width: 100px;
+    height: 45px;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 700;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+from .remember-forgot{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 15px;
+}
+
+.Remember-forgot button{
+    background-color: seagreen;
+    border: none;
+    text-decoration: underline;
+    color: white;
+    cursor: pointer;
+>>>>>>> a98255c782c4c91c51858219429931594b1d4086
 }

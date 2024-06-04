@@ -40,6 +40,10 @@ const Login = () => {
 
                     
                 
+<<<<<<< HEAD
+=======
+
+>>>>>>> a98255c782c4c91c51858219429931594b1d4086
                 {/* <div className='register-link'>
                     <Link to="/register">
                         <button type="button">Don&apos;t have an account?</button>
