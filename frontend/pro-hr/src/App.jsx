@@ -16,15 +16,12 @@ function App() {
     <>
       <Navbar />
       <Routes>
-<<<<<<< HEAD
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        
-=======
-        {/* <Route path="/" element={<Home />} /> */}
+
         <Route path="/" element={<Login />} />
         {/* <Route path="/register" element={<Register />} /> */}
->>>>>>> a98255c782c4c91c51858219429931594b1d4086
+
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/dashboard" element={<Dashboard />}>
           <Route path="add-employee" element={<AddEmployee />} />
