@@ -5,9 +5,11 @@ import './components.css';
 const EmployeeDetails = () => {
   const [employees, setEmployees] = useState([]);
   const [newEmployee, setNewEmployee] = useState({
+    employeeId: '',
     name: '',
     address: '',
     role: '',
+    salary: '',
     proofType: '',
     proofFile: null,
     profilePicture: null
@@ -35,7 +37,16 @@ const EmployeeDetails = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Check if employee ID already exists
+    const employeeExists = employees.some(emp => emp.employeeId === newEmployee.employeeId);
+    if (employeeExists) {
+      alert('Employee ID already exists. Please choose a unique ID.');
+      return;
+    }
+
     const formData = new FormData();
+    formData.append('employeeId', newEmployee.employeeId);
     formData.append('name', newEmployee.name);
     formData.append('address', newEmployee.address);
     formData.append('role', newEmployee.role);
@@ -53,10 +64,11 @@ const EmployeeDetails = () => {
       alert('Employee added successfully!');
       fetchEmployees();
       setNewEmployee({
+        employeeId: '',
         name: '',
         address: '',
         role: '',
-        salary:'',
+        salary: '',
         proofType: '',
         proofFile: null,
         profilePicture: null
@@ -72,6 +84,7 @@ const EmployeeDetails = () => {
           <li key={emp.id}>
             <img src={emp.profilePicture} alt={`${emp.name}'s profile`} className="profile-picture" />
             <div>
+              <strong>Employee ID:</strong> {emp.employeeId}<br />
               <strong>Name:</strong> {emp.name}<br />
               <strong>Address:</strong> {emp.address}<br />
               <strong>Role:</strong> {emp.role}<br />
@@ -83,6 +96,15 @@ const EmployeeDetails = () => {
       </ul>
       <form className="addemployee-form" onSubmit={handleSubmit}>
         <h2 className='addemployee-head'>Add Employee</h2>
+        <input 
+          className='addemployee-input'
+          type="text" 
+          name="employeeId" 
+          placeholder="Employee ID" 
+          value={newEmployee.employeeId} 
+          onChange={handleInputChange} 
+          required 
+        />
         <input 
           className='addemployee-input'
           type="text" 
