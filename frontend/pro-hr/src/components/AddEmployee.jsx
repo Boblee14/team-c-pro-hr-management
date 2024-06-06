@@ -5,9 +5,11 @@ import './components.css';
 const EmployeeDetails = () => {
   const [employees, setEmployees] = useState([]);
   const [newEmployee, setNewEmployee] = useState({
+    employeeId: '',
     name: '',
     address: '',
     role: '',
+    salary: '',
     proofType: '',
     proofFile: null,
     profilePicture: null
@@ -30,12 +32,31 @@ const EmployeeDetails = () => {
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-    setNewEmployee({ ...newEmployee, [name]: files[0] });
+    const file = files[0];
+    const reader = new FileReader();
+    
+    reader.onloadend = () => {
+      setNewEmployee({ ...newEmployee, [name]: reader.result });
+    };
+  
+    if (file) {
+      reader.readAsDataURL(file);
+    }
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Check if employee ID already exists
+    const employeeExists = employees.some(emp => emp.employeeId === newEmployee.employeeId);
+    if (employeeExists) {
+      alert('Employee ID already exists. Please choose a unique ID.');
+      return;
+    }
+
     const formData = new FormData();
+    formData.append('employeeId', newEmployee.employeeId);
     formData.append('name', newEmployee.name);
     formData.append('address', newEmployee.address);
     formData.append('role', newEmployee.role);
@@ -53,10 +74,11 @@ const EmployeeDetails = () => {
       alert('Employee added successfully!');
       fetchEmployees();
       setNewEmployee({
+        employeeId: '',
         name: '',
         address: '',
         role: '',
-        salary:'',
+        salary: '',
         proofType: '',
         proofFile: null,
         profilePicture: null
@@ -72,6 +94,7 @@ const EmployeeDetails = () => {
           <li key={emp.id}>
             <img src={emp.profilePicture} alt={`${emp.name}'s profile`} className="profile-picture" />
             <div>
+              <strong>Employee ID:</strong> {emp.employeeId}<br />
               <strong>Name:</strong> {emp.name}<br />
               <strong>Address:</strong> {emp.address}<br />
               <strong>Role:</strong> {emp.role}<br />
@@ -83,6 +106,15 @@ const EmployeeDetails = () => {
       </ul>
       <form className="addemployee-form" onSubmit={handleSubmit}>
         <h2 className='addemployee-head'>Add Employee</h2>
+        <input 
+          className='addemployee-input'
+          type="text" 
+          name="employeeId" 
+          placeholder="Employee ID" 
+          value={newEmployee.employeeId} 
+          onChange={handleInputChange} 
+          required 
+        />
         <input 
           className='addemployee-input'
           type="text" 
@@ -147,7 +179,7 @@ const EmployeeDetails = () => {
           onChange={handleFileChange} 
           required 
         />
-        <button className="addemployee-button" type="submit">Add Employee</button>
+        <button className="addemployee-button" type="submit">{console.log(newEmployee)}Add Employee</button>
       </form>
     </div>
   );
