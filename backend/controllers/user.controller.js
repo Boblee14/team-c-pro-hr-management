@@ -1,5 +1,6 @@
 
 const logindetails = require("../models/user.models");
+const Employee = require("../models/dashboard.models")
 
 const loginUser = async (req, res) => {
     const { username, password } = req.body;
@@ -24,4 +25,42 @@ const loginUser = async (req, res) => {
     }
 };
 
-module.exports = { loginUser };
+const getAllEmployees = async (req, res) => {
+    try {
+      const employees = await Employee.find();
+      res.send(employees);
+    } catch (error) {
+      res.status(500).send('Error fetching employees');
+    }
+  };
+  
+  // Add new employee
+  const addEmployee = async (req, res) => {
+    try {
+      const { employeeId, name, address, role, salary, proofType } = req.body;
+      if (!req.files || !req.files['proofFile'] || !req.files['profilePicture']) {
+        return res.status(400).send('Missing required file uploads');
+    }
+      const proofFile = req.files['proofFile'][0].buffer.toString('base64');
+      const profilePicture = req.files['profilePicture'][0].buffer.toString('base64');
+  
+      const newEmployee = new Employee({
+        employeeId,
+        name,
+        address,
+        role,
+        salary,
+        proofType,
+        proofFile,
+        profilePicture
+      });
+  
+      await newEmployee.save();
+      res.send('Employee added successfully');
+    } catch (error) {
+      res.status(500).send('Error adding employee');
+      console.log(error)
+    }
+  };
+
+module.exports = { loginUser,getAllEmployees, addEmployee };
