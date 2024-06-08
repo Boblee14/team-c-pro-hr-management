@@ -38,11 +38,24 @@ const getAllEmployees = async (req, res) => {
   const addEmployee = async (req, res) => {
     try {
       const { employeeId, name, address, role, salary, proofType } = req.body;
+      console.log(req.files)
       if (!req.files || !req.files['proofFile'] || !req.files['profilePicture']) {
         return res.status(400).send('Missing required file uploads');
+        
     }
-      const proofFile = req.files['proofFile'][0].buffer.toString('base64');
-      const profilePicture = req.files['profilePicture'][0].buffer.toString('base64');
+      // const proofFile = req.files['proofFile'][0].buffer.toString('base64');
+      // const profilePicture = req.files['profilePicture'][0].buffer.toString('base64');
+
+      const proofFileBuffer = req.files['proofFile'] ? req.files['proofFile'][0].buffer : undefined;
+      const profilePictureBuffer = req.files['profilePicture'] ? req.files['profilePicture'][0].buffer : undefined;
+
+      if (!proofFileBuffer || !profilePictureBuffer) {
+        return res.status(400).send('Missing required file uploads');
+      }
+
+      const proofFile = proofFileBuffer.toString('base64');
+      const profilePicture = profilePictureBuffer.toString('base64');
+
   
       const newEmployee = new Employee({
         employeeId,
