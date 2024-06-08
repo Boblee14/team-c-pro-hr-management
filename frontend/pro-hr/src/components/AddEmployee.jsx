@@ -30,18 +30,22 @@ const EmployeeDetails = () => {
     setNewEmployee({ ...newEmployee, [name]: value });
   };
 
+  // const handleFileChange = (e) => {
+  //   const { name, files } = e.target;
+  //   const file = files[0];
+  //   const reader = new FileReader();
+    
+  //   reader.onloadend = () => {
+  //     setNewEmployee({ ...newEmployee, [name]: reader.result });
+  //   };
+  
+  //   if (file) {
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-    const file = files[0];
-    const reader = new FileReader();
-    
-    reader.onloadend = () => {
-      setNewEmployee({ ...newEmployee, [name]: reader.result });
-    };
-  
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    setNewEmployee({ ...newEmployee, [name]: files[0] });
   };
   
 
