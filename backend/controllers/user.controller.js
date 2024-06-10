@@ -36,25 +36,27 @@ const getAllEmployees = async (req, res) => {
   
   // Add new employee
   const addEmployee = async (req, res) => {
+
     try {
-      const { employeeId, name, address, role, salary, proofType } = req.body;
-      console.log(req.files)
-      if (!req.files || !req.files['proofFile'] || !req.files['profilePicture']) {
-        return res.status(400).send('Missing required file uploads');
+      const profilePicture = req.file.filename
+      const { employeeId, name, address, role, salary } = req.body;
+      console.log(profilePicture)
+    //   if (!req.files || !req.files['proofFile'] || !req.files['profilePicture']) {
+    //     return res.status(400).send('Missing required file uploads');
         
-    }
+    // }
       // const proofFile = req.files['proofFile'][0].buffer.toString('base64');
       // const profilePicture = req.files['profilePicture'][0].buffer.toString('base64');
 
-      const proofFileBuffer = req.files['proofFile'] ? req.files['proofFile'][0].buffer : undefined;
-      const profilePictureBuffer = req.files['profilePicture'] ? req.files['profilePicture'][0].buffer : undefined;
+      // const proofFileBuffer = req.files['proofFile'] ? req.files['proofFile'][0].buffer : undefined;
+      // const profilePictureBuffer = req.files['profilePicture'] ? req.files['profilePicture'][0].buffer : undefined;
 
-      if (!proofFileBuffer || !profilePictureBuffer) {
-        return res.status(400).send('Missing required file uploads');
-      }
+      // if (!proofFileBuffer || !profilePictureBuffer) {
+      //   return res.status(400).send('Missing required file uploads');
+      // }
 
-      const proofFile = proofFileBuffer.toString('base64');
-      const profilePicture = profilePictureBuffer.toString('base64');
+      // const proofFile = proofFileBuffer.toString('base64');
+      // const profilePicture = profilePictureBuffer.toString('base64');
 
   
       const newEmployee = new Employee({
@@ -63,15 +65,15 @@ const getAllEmployees = async (req, res) => {
         address,
         role,
         salary,
-        proofType,
-        proofFile,
+        // proofType,
+        // proofFile,
         profilePicture
       });
   
       await newEmployee.save();
       res.send('Employee added successfully');
     } catch (error) {
-      res.status(500).send('Error adding employee');
+      res.status(500).send('Error adding employee details');
       console.log(error)
     }
   };

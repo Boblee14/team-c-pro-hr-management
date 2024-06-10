@@ -7,8 +7,8 @@ const employeeSchema = new mongoose.Schema({
   address: { type: String, required: true },
   role: { type: String, required: true },
   salary: { type: Number, required: true },
-  proofType: { type: String, required: true },
-  proofFile: { type: String, required: true },
+  // proofType: { type: String, required: true },
+  // proofFile: { type: String, required: true },
   profilePicture: { type: String, required: true }
 });
 

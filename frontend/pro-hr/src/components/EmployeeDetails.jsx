@@ -15,9 +15,27 @@ const EmployeeDetails = () => {
       <h2>Employee Details</h2>
       <ul>
         {employees.map(emp => (
-          <li key={emp.id}>{emp.name} - {emp.position} - {emp.salary}</li>
+          <li key={emp.id}>
+          {emp.profilePicture && (
+              <img
+                src={`../images/${emp.profilePicture}`}
+                alt={`${emp.name}'s profile`}
+                className="profile-picture"
+              />
+            )}  
+           
+            <div>
+              <strong>Employee ID:</strong> {emp.employeeId}<br />
+              <strong>Name:</strong> {emp.name}<br />
+              <strong>Address:</strong> {emp.address}<br />
+              <strong>Role:</strong> {emp.role}<br />
+              <strong>Salary:</strong> {emp.salary}<br />
+              {/* <strong>Proof:</strong> {emp.proofType}<br /> */}
+            </div>
+          </li>
         ))}
       </ul>
+      
     </div>
   );
 };

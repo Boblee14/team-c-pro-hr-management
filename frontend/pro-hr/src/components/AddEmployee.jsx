@@ -10,8 +10,8 @@ const EmployeeDetails = () => {
     address: '',
     role: '',
     salary: '',
-    proofType: '',
-    proofFile: null,
+    // proofType: '',
+    // proofFile: null,
     profilePicture: null
   });
 
@@ -49,8 +49,10 @@ const EmployeeDetails = () => {
   };
   
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log(newEmployee)
 
     // Check if employee ID already exists
     const employeeExists = employees.some(emp => emp.employeeId === newEmployee.employeeId);
@@ -65,9 +67,11 @@ const EmployeeDetails = () => {
     formData.append('address', newEmployee.address);
     formData.append('role', newEmployee.role);
     formData.append('salary', newEmployee.salary);
-    formData.append('proofType', newEmployee.proofType);
-    formData.append('proofFile', newEmployee.proofFile);
+    // formData.append('proofType', newEmployee.proofType);
+    // formData.append('proofFile', newEmployee.proofFile.files);
     formData.append('profilePicture', newEmployee.profilePicture);
+
+    console.log(formData)
 
     axios.post('http://localhost:5001/api/employees', formData, {
       headers: {
@@ -83,20 +87,35 @@ const EmployeeDetails = () => {
         address: '',
         role: '',
         salary: '',
-        proofType: '',
-        proofFile: null,
+        // proofType: '',
+        // proofFile: null,
         profilePicture: null
       });
     })
-    .catch(error => alert('Error adding employee'));
+    .catch(error => {
+      alert('Error in adding employee')
+      console.log(error)
+    });
   };
 
   return (
     <div className="employee-details">
-      <ul>
+      {/* <ul>
         {employees.map(emp => (
           <li key={emp.id}>
-            <img src={emp.profilePicture} alt={`${emp.name}'s profile`} className="profile-picture" />
+           {
+            emp.profilePicture==null ? '':
+            <img src={require(`./images/${emp.profilePicture}`)} alt={`${emp.name}'s profile`} className="profile-picture" />
+           }
+
+          {emp.profilePicture && (
+              <img
+                src={`../images/${emp.profilePicture}`}
+                alt={`${emp.name}'s profile`}
+                className="profile-picture"
+              />
+            )}  
+           
             <div>
               <strong>Employee ID:</strong> {emp.employeeId}<br />
               <strong>Name:</strong> {emp.name}<br />
@@ -107,7 +126,7 @@ const EmployeeDetails = () => {
             </div>
           </li>
         ))}
-      </ul>
+      </ul> */}
       <form className="addemployee-form" onSubmit={handleSubmit}>
         <h2 className='addemployee-head'>Add Employee</h2>
         <input 
@@ -155,7 +174,7 @@ const EmployeeDetails = () => {
           onChange={handleInputChange} 
           required 
         />
-        <select 
+        {/* <select 
           className='addemployee-input'
           name="proofType" 
           value={newEmployee.proofType} 
@@ -166,15 +185,15 @@ const EmployeeDetails = () => {
           <option value="Aadhar">Aadhar</option>
           <option value="PAN">PAN</option>
           <option value="Driving License">Driving License</option>
-        </select>
-        <input 
+        </select> */}
+        {/* <input 
           className='addemployee-input'
           type="file" 
           name="proofFile" 
           accept=".pdf,.jpg,.jpeg,.png" 
           onChange={handleFileChange} 
           required 
-        />
+        /> */}
         <input 
           className='addemployee-input'
           type="file" 
