@@ -15,17 +15,15 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const loginSubmitHandler = (e) => {
+  const loginSubmitHandler = async (e) => {
     e.preventDefault();
-    axios.post("http://localhost:5001/api/login", details)
-      .then(res => {
-        alert(res.data.message);
-        login();
-        navigate("/dashboard", { state: { id: res.data.result } });
-      })
-      .catch(err => {
-        alert(err.response ? err.response.data.message : "Login failed. Please try again.");
-      });
+    try {
+      const res = await axios.post("http://localhost:5001/api/login", details);
+      login();
+      navigate("/dashboard", { state: { id: res.data.result } });
+    } catch (err) {
+      alert(err.response ? err.response.data.message : "Login failed. Please try again.");
+    }
   };
 
   return (

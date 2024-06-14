@@ -1,4 +1,3 @@
-// src/pages/Dashboard/Welcome.jsx
 import React from 'react';
 import './dashboard.css';
 

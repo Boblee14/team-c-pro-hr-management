@@ -1,25 +1,33 @@
-// src/pages/Dashboard/Dashboard.jsx
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import ListIcon from '@mui/icons-material/List';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import './dashboard.css';
 
 const navItems = [
-  { path: 'add-employee', label: 'Add Employee' },
-  { path: 'employee-details', label: 'View Employee Details' },
-  { path: 'attendance-tracking', label: 'Attendance Tracking' },
-  { path: 'salary-calculation', label: 'Salary Calculation' },
-  { path: 'salary-slip-generation', label: 'Salary Slip Generation' },
+  { path: '', label: 'Home', icon: <HomeIcon /> },
+  { path: 'add-employee', label: 'Add Employee', icon: <PersonAddIcon /> },
+  { path: 'employee-details', label: 'View Employee Details', icon: <ListIcon /> },
+  { path: 'attendance-tracking', label: 'Attendance Tracking', icon: <AccessTimeIcon /> },
+  { path: 'salary-calculation', label: 'Salary Calculation', icon: <AttachMoneyIcon /> },
+  { path: 'salary-slip-generation', label: 'Salary Slip Generation', icon: <ReceiptIcon /> },
 ];
 
 const Dashboard = () => {
-  
   return (
     <div className="dashboard">
       <nav className="dashboard-nav">
         <ul>
           {navItems.map((item, index) => (
             <li key={index}>
-              <Link to={item.path}>{item.label}</Link>
+              <Link to={item.path}>
+                {item.icon}
+                <span>{item.label}</span>
+              </Link>
             </li>
           ))}
         </ul>

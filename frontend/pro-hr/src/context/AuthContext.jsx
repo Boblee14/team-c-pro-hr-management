@@ -5,14 +5,12 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    // Initialize state from localStorage
     const savedAuthState = localStorage.getItem('isAuthenticated');
     return savedAuthState ? JSON.parse(savedAuthState) : false;
   });
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Save authentication state to localStorage
     localStorage.setItem('isAuthenticated', JSON.stringify(isAuthenticated));
   }, [isAuthenticated]);
 

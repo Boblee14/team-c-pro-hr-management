@@ -1,71 +1,148 @@
+/* Dashboard Container */
+.dashboard {
+  display: flex;
+  height: 89vh;
+}
 
-  /* Dashboard Container */
+/* Navigation Styles */
+.dashboard-nav {
+  width: 250px;
+  background-color: #1C1A18;
+}
+
+.dashboard-nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dashboard-nav li {
+  margin: 15px 0;
+}
+
+.dashboard-nav a {
+  text-decoration: none;
+  color: #cccccc;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.dashboard-nav a:hover {
+  background-color: #fe8040;
+  color: #fff;
+}
+
+.dashboard-nav a span {
+  margin-left: 10px;
+}
+
+/* Responsive Styles for Dashboard */
+@media (max-width: 768px) {
   .dashboard {
-    display: flex;
-    height: 100vh;
+    flex-direction: column;
   }
-  
-  /* Navigation Styles */
+
+ 
   .dashboard-nav {
-    width: 250px;
-    background-color: #c3d1d7;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    width: 100%;
+    height: auto;
+    display: flex;
+    overflow-x: auto; 
+    padding:20px 0px 20px 0px;
   }
-  
+
   .dashboard-nav ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+    display: flex;
+    flex-direction: row; 
+    gap:50px;
+    margin: auto;
   }
-  
+
   .dashboard-nav li {
-    margin: 15px 0;
+    margin: 0 15px;
   }
-  
+
   .dashboard-nav a {
-    text-decoration: none;
-    color: #2c2c2c;
-    font-size: 18px;
-    display: block;
-    padding: 10px 15px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .dashboard-nav a:hover {
-    background-color: #34495e;
-    color: #fff;
-  }
-  
-  /* Content Styles */
-  .dashboard-content {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #ecf0f1;
-    overflow-y: auto;
-  }
-  
-  .dashboard-content h2 {
-    margin-top: 0;
-    font-size: 24px;
-    color: #2c3e50;
+    font-size: 16px;
+    padding: 10px 8px;
   }
 
+  .dashboard-nav a span {
+    display: none;
+  }
+}
 
-/* welcome */
+@media (max-width: 480px) {
+  .dashboard-nav {
+    padding: 30px 0px 30px 0px;
+  }
 
+  .dashboard-nav ul {
+    display: flex;
+    flex-direction: row; 
+    gap:50px;
+    margin: auto;
+  }
+
+  .dashboard-nav a {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .dashboard-nav a span {
+    margin-left: 5px;
+  }
+}
+
+/*dashboard Content Styles */
+.dashboard-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #151210;
+  overflow-y: auto;
+  width: 80%;
+}
+
+.dashboard-content h2 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #cccccc;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Welcome Styles */
 .welcome {
   padding: 20px;
   text-align: center;
+  border-radius: 8px;
+  color: #fe8040;
 }
 
-header {
+.welcome header {
   margin-bottom: 20px;
-  color: #2c2c2c;
 }
 
+.welcome header h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.welcome header p {
+  font-size: 18px;
+  color: #cccccc;
+}
+
+/*dashboard Features style */
 .features-overview {
+  margin-bottom: 20px;
+}
+
+.features-overview h2 {
+  font-size: 28px;
   margin-bottom: 20px;
 }
 
@@ -77,61 +154,43 @@ header {
 
 .feature-item {
   flex: 1;
-  min-width: 200px;
   margin: 10px;
-  padding: 15px;
   border: 1px solid #b2bec3;
   border-radius: 8px;
-  background-color: #2c3e50;
-}
-
-.quick-start {
-  margin-bottom: 20px;
-}
-
-.cta-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.cta-button:hover {
-  background-color: #0056b3;
-}
-
-.video-tour {
-  margin-bottom: 20px;
-}
-
-.testimonials {
-  margin-bottom: 20px;
-}
-
-.testimonial-item {
+  background-color: #1C1A18;
+  color: #fff;
+  min-width: 100px;
   margin: 10px;
   padding: 15px;
-  background-color: #f8f8f8;
-  border-left: 4px solid #007bff;
 }
 
-.recent-updates {
-  margin-bottom: 20px;
+.feature-item h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
 }
 
-.user-resources {
-  margin-bottom: 20px;
+.feature-item p {
+  font-size: 16px;
+  color: #bdc3c7;
 }
 
-.user-resources a {
-  display: block;
-  margin: 5px 0;
-  color: #007bff;
-  text-decoration: none;
+/* Responsive Styles for dashboard Features */
+@media (max-width: 768px) {
+  .feature-item {
+    flex: 1 1 calc(50% - 20px);
+  }
+  .dashboard-content{
+    width: auto;
+  }
 }
 
-.user-resources a:hover {
-  text-decoration: underline;
+@media (max-width: 480px) {
+  .feature-item {
+    flex: 1 1 100%;
+  }
+
+  .dashboard-content{
+    width: auto;
+  }
+
 }

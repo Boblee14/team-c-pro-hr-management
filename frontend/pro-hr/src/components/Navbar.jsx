@@ -7,8 +7,8 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
-      <div>
-        <h1 style={{ color: '#2c2c2c' }}>Pro HR</h1>
+      <div className="link-login-head">
+        <h1 className="login-head" >Pro HR</h1>
       </div>
       <div className="link-style-div">
         {isAuthenticated ? (
