@@ -1,4 +1,3 @@
-
 const logindetails = require("../models/user.models");
 const Employee = require("../models/dashboard.models")
 
@@ -78,4 +77,42 @@ const getAllEmployees = async (req, res) => {
     }
   };
 
-module.exports = { loginUser,getAllEmployees, addEmployee };
+  const updateEmployee = async (req, res) => {
+    const { id } = req.params;
+    const { employeeId, name, address, role, salary, profilePicture } = req.body;
+
+    try {
+        const updatedEmployee = await Employee.findByIdAndUpdate(
+            id,
+            { employeeId, name, address, role, salary, profilePicture },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedEmployee) {
+            return res.status(404).json({ message: "Employee not found" });
+        }
+
+        res.json({ message: "Employee updated successfully", updatedEmployee });
+    } catch (error) {
+        res.status(500).json({ message: "Error updating employee" });
+    }
+};
+
+const deleteEmployee = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deletedEmployee = await Employee.findByIdAndDelete(id);
+
+        if (!deletedEmployee) {
+            return res.status(404).json({ message: "Employee not found" });
+        }
+
+        res.json({ message: "Employee deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Error deleting employee" });
+    }
+};
+
+module.exports = { loginUser, getAllEmployees, addEmployee, updateEmployee, deleteEmployee };
+
