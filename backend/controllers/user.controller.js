@@ -33,30 +33,13 @@ const getAllEmployees = async (req, res) => {
     }
   };
   
-  // Add new employee
+
   const addEmployee = async (req, res) => {
 
     try {
       const profilePicture = req.file.filename
       const { employeeId, name, address, role, salary } = req.body;
       console.log(profilePicture)
-    //   if (!req.files || !req.files['proofFile'] || !req.files['profilePicture']) {
-    //     return res.status(400).send('Missing required file uploads');
-        
-    // }
-      // const proofFile = req.files['proofFile'][0].buffer.toString('base64');
-      // const profilePicture = req.files['profilePicture'][0].buffer.toString('base64');
-
-      // const proofFileBuffer = req.files['proofFile'] ? req.files['proofFile'][0].buffer : undefined;
-      // const profilePictureBuffer = req.files['profilePicture'] ? req.files['profilePicture'][0].buffer : undefined;
-
-      // if (!proofFileBuffer || !profilePictureBuffer) {
-      //   return res.status(400).send('Missing required file uploads');
-      // }
-
-      // const proofFile = proofFileBuffer.toString('base64');
-      // const profilePicture = profilePictureBuffer.toString('base64');
-
   
       const newEmployee = new Employee({
         employeeId,
@@ -76,6 +59,20 @@ const getAllEmployees = async (req, res) => {
       console.log(error)
     }
   };
+
+  const getSpecificEmployee=  async (req, res) => {
+    const id = req.params.id;
+  
+    try {
+      const employee = await Employee.findById(id);
+      if (!employee) {
+        return res.status(404).json({ message: 'Employee not found' });
+      }
+      res.json(employee);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
 
   const updateEmployee = async (req, res) => {
     const { id } = req.params;
@@ -114,5 +111,5 @@ const deleteEmployee = async (req, res) => {
     }
 };
 
-module.exports = { loginUser, getAllEmployees, addEmployee, updateEmployee, deleteEmployee };
+module.exports = { loginUser, getAllEmployees, addEmployee, updateEmployee, deleteEmployee, getSpecificEmployee };
 

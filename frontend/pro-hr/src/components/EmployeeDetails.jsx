@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './components.css'; 
+import { useNavigate } from 'react-router-dom';
 
 const EmployeeDetails = () => {
   const [employees, setEmployees] = useState([]);
-  const [editMode, setEditMode] = useState(false);
-  const [currentEmployee, setCurrentEmployee] = useState(null);
+  // const [editMode, setEditMode] = useState(false);
+  // const [currentEmployee, setCurrentEmployee] = useState(null);
   const [message, setMessage] = useState(null);
   const [messageType, setMessageType] = useState(''); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchEmployees();
@@ -39,28 +41,11 @@ const EmployeeDetails = () => {
   };
 
   const handleUpdate = (employee) => {
-    setEditMode(true);
-    setCurrentEmployee(employee);
+    // setEditMode(true);
+    // setCurrentEmployee(employee);
+    navigate(`/update-employee/${employee._id}`);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const id = currentEmployee._id;
-
-    axios.put(`http://localhost:5001/api/employees/${id}`, formData)
-      .then(response => {
-        setMessage('Employee updated successfully!');
-        setMessageType('success');
-        setEditMode(false);
-        setCurrentEmployee(null);
-        fetchEmployees();
-      })
-      .catch(error => {
-        setMessage('Error updating employee');
-        setMessageType('error');
-      });
-  };
 
   return (
     <div className="employee-details view-employee">
@@ -95,18 +80,6 @@ const EmployeeDetails = () => {
         ))}
       </ul>
 
-      {editMode && (
-        <form onSubmit={handleSubmit}>
-          <h3>Update Employee</h3>
-          <input type="text" name="employeeId" defaultValue={currentEmployee.employeeId} required />
-          <input type="text" name="name" defaultValue={currentEmployee.name} required />
-          <input type="text" name="address" defaultValue={currentEmployee.address} required />
-          <input type="text" name="role" defaultValue={currentEmployee.role} required />
-          <input type="number" name="salary" defaultValue={currentEmployee.salary} required />
-          <input type="file" name="profilePicture" />
-          <button type="submit">Submit</button>
-        </form>
-      )}
     </div>
   );
 };

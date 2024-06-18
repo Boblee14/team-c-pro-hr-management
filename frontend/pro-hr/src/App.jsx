@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login/Login';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import Home from './pages/Home/Home';
@@ -11,6 +11,7 @@ import EmployeeDetails from './components/EmployeeDetails';
 // import SalarySlipGeneration from './components/SalarySlipGeneration';
 import Welcome from './pages/Dashboard/welcome';
 import { AuthProvider } from './context/AuthContext';
+import UpdateEmployee from './components/UpdateEmployee';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="salary-calculation" element={<SalaryCalculation />} />
           <Route path="salary-slip-generation" element={<SalarySlipGeneration />} /> */}
         </Route>
+        <Route path="/update-employee/:id" element={<UpdateEmployee />} />
       </Routes>
     </AuthProvider>
   );
