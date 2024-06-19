@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './components.css';
+import './addemployee.css';
 
 const EmployeeDetails = () => {
   const [employees, setEmployees] = useState([]);

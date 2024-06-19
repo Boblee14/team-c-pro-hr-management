@@ -1,0 +1,82 @@
+
+/* Add Employee Form Styles */
+.addemployee-form {
+  margin-top: 10px;
+  text-align: center;
+  width: 50%;
+  background-color: #1c1a18;
+  padding: 20px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+}
+.addemployee-head{
+  color: #fe8040 !important;
+}
+
+.addemployee-input {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.addemployee-button {
+  width: 40%;
+  padding: 10px 0;
+  background-color: #fe8040;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: auto;
+}
+
+.addemployee-button:hover {
+  background-color: #303030;
+}
+
+/* Responsive Styles for Add Employee Form */
+@media (max-width: 600px) {
+  .addemployee-form {
+    width: 80%;
+    padding: 15px;
+  }
+
+  .addemployee-input {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .addemployee-button {
+    width: 60%;
+    font-size: 14px;
+    padding: 8px 0;
+  }
+}
+
+  /* Alert Messages */
+.message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  
+  .message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  

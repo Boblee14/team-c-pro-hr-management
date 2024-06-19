@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './components.css'; 
+import './employeedeatils.css'; 
 import { useNavigate } from 'react-router-dom';
 
 const EmployeeDetails = () => {

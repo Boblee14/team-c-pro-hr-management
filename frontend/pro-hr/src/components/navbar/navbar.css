@@ -1,0 +1,76 @@
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    align-items: center;
+    font-family: sans-serif;
+    justify-content: space-between;
+    padding: 3px 8rem;
+    background-color: #1c1a18;
+  }
+  
+  .link-style-div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .login-head {
+    color: #FE8040;
+    font-size: 32px;
+  }
+  
+  .login-nav {
+    padding: 10px 15px;
+    font-size: 18px;
+    background-color: #FE8040;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .login-nav:hover {
+    background-color: #303030;
+  }
+  
+  /* Responsive Styles for Navbar */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      padding: 3px 2rem;
+    }
+  
+    .link-login-head {
+      width: 100%;
+      text-align: center;
+    }
+  
+    .login-head {
+      font-size: 24px;
+    }
+  
+    .link-style-div {
+      width: 100%;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+  
+    .login-nav {
+      font-size: 16px;
+      padding: 8px 12px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .navbar {
+      padding: 3px 1rem;
+    }
+  
+    .login-head {
+      font-size: 20px;
+    }
+  
+    .login-nav {
+      font-size: 14px;
+      padding: 6px 10px;
+    }
+  }
+  

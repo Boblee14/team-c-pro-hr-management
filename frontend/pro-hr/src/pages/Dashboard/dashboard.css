@@ -40,6 +40,13 @@
   margin-left: 10px;
 }
 
+.MuiSvgIcon-root{
+  color: #fe8040;
+}
+
+.MuiSvgIcon-root:hover{
+  color: #ffff;
+}
 /* Responsive Styles for Dashboard */
 @media (max-width: 768px) {
   .dashboard {

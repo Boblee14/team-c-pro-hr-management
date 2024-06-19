@@ -2,16 +2,18 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login/Login';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import Home from './pages/Home/Home';
-import Navbar from './components/Navbar';
+import Navbar from './components/navbar/Navbar';
 import Dashboard from './pages/Dashboard/dashboard';
-import AddEmployee from './components/AddEmployee';
-import EmployeeDetails from './components/EmployeeDetails';
-// import AttendanceTracking from './components/AttendanceTracking';
+import AddEmployee from './components/addemployee/AddEmployee';
+import EmployeeDetails from './components/viewemployee/EmployeeDetails';
+import AttendanceTracking from './components/attendancetrancking/AttendanceTracking';
 // import SalaryCalculation from './components/SalaryCalculation';
 // import SalarySlipGeneration from './components/SalarySlipGeneration';
 import Welcome from './pages/Dashboard/welcome';
 import { AuthProvider } from './context/AuthContext';
-import UpdateEmployee from './components/UpdateEmployee';
+import UpdateEmployee from './components/viewemployee/UpdateEmployee';
+import MarkAttendance from './components/attendancetrancking/MarkAttendance'; // Import MarkAttendance component
+import ViewAttendance from './components/attendancetrancking/ViewAttendance'; // Import ViewAttendance component
 
 function App() {
   return (
@@ -25,11 +27,13 @@ function App() {
           <Route path="" element={<Welcome />} />
           <Route path="add-employee" element={<AddEmployee />} />
           <Route path="employee-details" element={<EmployeeDetails />} />
-          {/* <Route path="attendance-tracking" element={<AttendanceTracking />} />
-          <Route path="salary-calculation" element={<SalaryCalculation />} />
+          <Route path="attendance-tracking/*" element={<AttendanceTracking />} />
+          {/* <Route path="salary-calculation" element={<SalaryCalculation />} />
           <Route path="salary-slip-generation" element={<SalarySlipGeneration />} /> */}
         </Route>
         <Route path="/update-employee/:id" element={<UpdateEmployee />} />
+        <Route path="/mark-attendance" element={<MarkAttendance />} /> {/* Add route for Mark Attendance */}
+        <Route path="/view-attendance" element={<ViewAttendance />} /> {/* Add route for View Attendance */}
       </Routes>
     </AuthProvider>
   );
