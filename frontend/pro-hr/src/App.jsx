@@ -7,7 +7,7 @@ import Dashboard from './pages/Dashboard/dashboard';
 import AddEmployee from './components/addemployee/AddEmployee';
 import EmployeeDetails from './components/viewemployee/EmployeeDetails';
 import AttendanceTracking from './components/attendancetrancking/AttendanceTracking';
-// import SalaryCalculation from './components/SalaryCalculation';
+import SalaryCalculation from './components/salary/SalaryCalculation';
 // import SalarySlipGeneration from './components/SalarySlipGeneration';
 import Welcome from './pages/Dashboard/welcome';
 import { AuthProvider } from './context/AuthContext';
@@ -27,9 +27,9 @@ function App() {
           <Route path="" element={<Welcome />} />
           <Route path="add-employee" element={<AddEmployee />} />
           <Route path="employee-details" element={<EmployeeDetails />} />
-          <Route path="attendance-tracking/*" element={<AttendanceTracking />} />
-          {/* <Route path="salary-calculation" element={<SalaryCalculation />} />
-          <Route path="salary-slip-generation" element={<SalarySlipGeneration />} /> */}
+          <Route path="attendance-tracking" element={<AttendanceTracking />} />
+          <Route path="salary-calculation" element={<SalaryCalculation />} />
+          {/* <Route path="salary-slip-generation" ele  ment={<SalarySlipGeneration />} /> */}
         </Route>
         <Route path="/update-employee/:id" element={<UpdateEmployee />} />
         <Route path="/mark-attendance" element={<MarkAttendance />} /> {/* Add route for Mark Attendance */}

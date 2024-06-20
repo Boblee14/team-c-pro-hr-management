@@ -1,5 +1,6 @@
 const logindetails = require("../models/user.models");
 const Employee = require("../models/dashboard.models")
+const Attendance = require("../models/attendance.models")
 
 const loginUser = async (req, res) => {
     const { username, password } = req.body;
@@ -111,5 +112,80 @@ const deleteEmployee = async (req, res) => {
     }
 };
 
-module.exports = { loginUser, getAllEmployees, addEmployee, updateEmployee, deleteEmployee, getSpecificEmployee };
+const employeeAttendance = async (req, res) => {
+  const { employeeId, date, status } = req.body;
+  try {
+    const attendance = new Attendance({ employeeId, date, status });
+    await attendance.save();
+
+    if (status === 'CL') {
+      await Employee.findByIdAndUpdate(employeeId, { $inc: { cl: 1 } });
+    } else if (status === 'ML') {
+      await Employee.findByIdAndUpdate(employeeId, { $inc: { ml: 1 } });
+    }
+
+    res.status(201).send(attendance);
+  } catch (error) {
+    res.status(500).send({ error: 'Error recording attendance' });
+  }
+}
+
+const specificEmployeeAttendance = async (req, res) => {
+  const { employeeId } = req.params;
+  try {
+    const attendanceRecords = await Attendance.find({ employeeId }).sort({ date: 1 });
+    res.send(attendanceRecords);
+  } catch (error) {
+    res.status(500).send({ error: 'Error fetching attendance records' });
+  }
+}
+
+const salaryDetails =  async (req, res) => {
+  const { employeeId } = req.params;
+  try {
+    const attendanceRecords = await Attendance.find({ employeeId }).sort({ date: 1 });
+    const employee = await Employee.findById(employeeId);
+    
+    if (!employee) {
+      return res.status(404).send({ error: 'Employee not found' });
+    }
+
+    const dailySalary = employee.salary / 30; 
+    let workingDays = 0;
+    let clDays = 0;
+    let mlDays = 0;
+    let absentDays = 0;
+
+    attendanceRecords.forEach(record => {
+      if (record.status === 'Present') {
+        workingDays++;
+      } else if (record.status === 'CL') {
+        clDays++;
+      } else if (record.status === 'ML') {
+        mlDays++;
+      } else if (record.status === 'Absent') {
+        absentDays++;
+      }
+    });
+
+    const totalPaidDays = workingDays + clDays;
+    const totalUnpaidDays = mlDays + absentDays;
+    const totalSalary = totalPaidDays * dailySalary;
+
+    res.send({ 
+      employeeId,
+      workingDays,
+      clDays,
+      mlDays,
+      absentDays,
+      totalPaidDays,
+      totalUnpaidDays,
+      totalSalary,
+    });
+  } catch (error) {
+    res.status(500).send({ error: 'Error calculating salary' });
+  }
+}
+
+module.exports = { loginUser, getAllEmployees, addEmployee, updateEmployee, deleteEmployee, getSpecificEmployee, employeeAttendance, specificEmployeeAttendance, salaryDetails };
 

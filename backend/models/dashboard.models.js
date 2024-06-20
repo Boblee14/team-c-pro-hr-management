@@ -9,7 +9,9 @@ const employeeSchema = new mongoose.Schema({
   salary: { type: Number, required: true },
   // proofType: { type: String, required: true },
   // proofFile: { type: String, required: true },
-  profilePicture: { type: String, required: true }
+  profilePicture: { type: String, required: true },
+  cl: { type: Number, default: 0, required: true },
+  ml: { type: Number, default: 0, required: true }
 });
 
 const Employee = mongoose.model('Employee', employeeSchema);
