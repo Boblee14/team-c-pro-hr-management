@@ -33,15 +33,18 @@ const MarkAttendance = () => {
     axios.post('http://localhost:5001/api/attendance/record', {
       employeeId: selectedEmployee,
       date,
-      status: attendanceStatus,
+      status:attendanceStatus,
     })
       .then(response => {
         setMessage('Attendance recorded successfully!');
       })
       .catch(error => {
         setMessage('Error recording attendance');
+        console.log(error)
       });
   };
+
+  console.log(status)
 
   return (
     <div className="attendance-tracking">
@@ -57,7 +60,7 @@ const MarkAttendance = () => {
         >
           <option value="">Select Employee</option>
           {employees.map(emp => (
-            <option key={emp._id} value={emp._id}>
+            <option key={emp._id} value={emp.employeeId}>
               {emp.name}
             </option>
           ))}
@@ -74,6 +77,7 @@ const MarkAttendance = () => {
         >
           <option value="Present">Present</option>
           <option value="Absent">Absent</option>
+
         </select>
         {status === 'Absent' && (
           <select

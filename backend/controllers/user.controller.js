@@ -1,6 +1,7 @@
 const logindetails = require("../models/user.models");
 const Employee = require("../models/dashboard.models")
 const Attendance = require("../models/attendance.models")
+const mongoose = require('mongoose')
 
 const loginUser = async (req, res) => {
     const { username, password } = req.body;
@@ -126,16 +127,24 @@ const employeeAttendance = async (req, res) => {
 
     res.status(201).send(attendance);
   } catch (error) {
-    res.status(500).send({ error: 'Error recording attendance' });
+    res.status(500).send({ error: 'Error recording attendance backend' });
   }
 }
 
 const specificEmployeeAttendance = async (req, res) => {
   const { employeeId } = req.params;
+  // if (!mongoose.Types.ObjectId.isValid(employeeId)) {
+  //   return res.status(400).send({ error: 'Invalid employee ID' });
+  // }
   try {
-    const attendanceRecords = await Attendance.find({ employeeId }).sort({ date: 1 });
-    res.send(attendanceRecords);
+    const records = await Attendance.find({ employeeId });
+    if (records.length === 0) {
+      return res.status(404).json({ error: 'No attendance records found for this employee' });
+    }
+    res.status(200).json(records);
+
   } catch (error) {
+    console.error('Error fetching attendance records:', error);
     res.status(500).send({ error: 'Error fetching attendance records' });
   }
 }
