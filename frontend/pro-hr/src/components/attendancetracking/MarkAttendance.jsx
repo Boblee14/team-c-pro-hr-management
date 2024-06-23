@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './attendanceTracking.css'
+import { Link } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
+import './attendanceTracking.css';
 
-const AttendanceTracking = () => {
+const MarkAttendance = () => {
   const [employees, setEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState('');
-  const [attendanceRecords, setAttendanceRecords] = useState([]);
   const [date, setDate] = useState('');
   const [status, setStatus] = useState('Present');
+  const [leaveType, setLeaveType] = useState('CL');
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -24,26 +26,17 @@ const AttendanceTracking = () => {
       });
   };
 
-  const fetchAttendanceRecords = (employeeId) => {
-    axios.get(`http://localhost:5001/api/attendance/${employeeId}`)
-      .then(response => {
-        setAttendanceRecords(response.data);
-      })
-      .catch(error => {
-        setMessage('Error fetching attendance records');
-      });
-  };
-
   const handleRecordAttendance = (e) => {
     e.preventDefault();
+    const attendanceStatus = status === 'Absent' ? leaveType : status;
+
     axios.post('http://localhost:5001/api/attendance/record', {
       employeeId: selectedEmployee,
       date,
-      status,
+      status: attendanceStatus,
     })
       .then(response => {
         setMessage('Attendance recorded successfully!');
-        // fetchAttendanceRecords(selectedEmployee);
       })
       .catch(error => {
         setMessage('Error recording attendance');
@@ -52,7 +45,10 @@ const AttendanceTracking = () => {
 
   return (
     <div className="attendance-tracking">
-      <h2>Attendance Tracking</h2>
+      <Link to="/dashboard/attendance-tracking" className="back-link">
+        <FaArrowLeft className="back-icon" /> Back
+      </Link>
+      <h2>Mark Attendance</h2>
       {message && <div className="message">{message}</div>}
       <form onSubmit={handleRecordAttendance}>
         <select
@@ -78,26 +74,23 @@ const AttendanceTracking = () => {
         >
           <option value="Present">Present</option>
           <option value="Absent">Absent</option>
-          <option value="CL">Casual Leave</option>
-          <option value="ML">Medical Leave</option>
         </select>
-        <button  type="submit">Record Attendance</button>
-      </form>
-
-      {/* {selectedEmployee && (
-        <div>
-          <h3>Attendance Records</h3>
-          <ul>
-            {attendanceRecords.map(record => (
-              <li key={record._id}>
-                {record.date}: {record.status}
-              </li>
-            ))}
-          </ul>
+        {status === 'Absent' && (
+          <select
+            value={leaveType}
+            onChange={(e) => setLeaveType(e.target.value)}
+            required
+          >
+            <option value="CL">Casual Leave</option>
+            <option value="ML">Medical Leave</option>
+          </select>
+        )}
+        <div className="button-group">
+          <button type="submit">Record Attendance</button>  
         </div>
-      )} */}
+      </form>
     </div>
   );
 };
 
-export default AttendanceTracking;
+export default MarkAttendance;

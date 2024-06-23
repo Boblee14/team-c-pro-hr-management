@@ -7,7 +7,7 @@
 /* Navigation Styles */
 .dashboard-nav {
   width: 250px;
-  background-color: #1C1A18;
+  background:#1E1E1E;
 }
 
 .dashboard-nav ul {
@@ -109,7 +109,7 @@
 .dashboard-content {
   flex-grow: 1;
   padding: 20px;
-  background-color: #151210;
+  background-color:#151210;
   overflow-y: auto;
   width: 80%;
 }
@@ -164,7 +164,7 @@
   margin: 10px;
   border: 1px solid #b2bec3;
   border-radius: 8px;
-  background-color: #1C1A18;
+  background-color: #1E1E1E !important;
   color: #fff;
   min-width: 100px;
   margin: 10px;

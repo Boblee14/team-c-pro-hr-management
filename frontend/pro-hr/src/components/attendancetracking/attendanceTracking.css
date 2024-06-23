@@ -1,0 +1,136 @@
+.attendance {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 50px;
+  font-family: Arial, sans-serif;
+  background-color: #1E1E1E;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+}
+
+.attendance h2, .mark-attendance h3, .view-attendance h3, .employee-profile h3 {
+  text-align: center;
+  color: #fe8040;
+}
+
+.message {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.card-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.card {
+  padding: 20px;
+  border-style:solid;
+  border-color: #fe8040;
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  text-decoration: none;
+  width: 200px;
+  transition: background-color 0.3s ease;
+}
+
+.card:hover{
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+.attendance-tracking {
+  background-color: #1c1a18;
+  color: #e0e0e0;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  font-family: 'Arial', sans-serif;
+  margin-top: 10%;
+}
+
+.attendance-tracking h2 {
+  text-align: center;
+  color: #fe8040;
+  margin-bottom: 20px;
+}
+
+.message {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fe8040;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+select, input[type="date"], button {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+  color: #1c1a18;
+  background-color: #e0e0e0;
+}
+
+select:focus, input[type="date"]:focus, button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 128, 64, 0.7);
+}
+
+.button-group{
+  text-align: center;
+}
+button {
+  background-color: #fe8040;
+  color: #1c1a18;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #ff9a57;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  color: #fe8040;
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: color 0.3s ease;
+}
+
+.back-link:hover {
+  color: #ff9a57;
+}
+
+.back-icon {
+  margin-right: 5px;
+}

@@ -6,14 +6,14 @@ import Navbar from './components/navbar/Navbar';
 import Dashboard from './pages/Dashboard/dashboard';
 import AddEmployee from './components/addemployee/AddEmployee';
 import EmployeeDetails from './components/viewemployee/EmployeeDetails';
-import AttendanceTracking from './components/attendancetrancking/AttendanceTracking';
+import AttendanceTracking from './components/attendancetracking/AttendanceTracking';
 import SalaryCalculation from './components/salary/SalaryCalculation';
 // import SalarySlipGeneration from './components/SalarySlipGeneration';
 import Welcome from './pages/Dashboard/welcome';
 import { AuthProvider } from './context/AuthContext';
 import UpdateEmployee from './components/viewemployee/UpdateEmployee';
-import MarkAttendance from './components/attendancetrancking/MarkAttendance'; // Import MarkAttendance component
-import ViewAttendance from './components/attendancetrancking/ViewAttendance'; // Import ViewAttendance component
+import MarkAttendance from './components/attendancetracking/MarkAttendance'; // Import MarkAttendance component
+import ViewAttendance from './components/attendancetracking/ViewAttendance'; // Import ViewAttendance component
 
 function App() {
   return (
