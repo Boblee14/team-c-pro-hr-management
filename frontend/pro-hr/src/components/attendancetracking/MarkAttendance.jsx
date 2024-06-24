@@ -16,35 +16,31 @@ const MarkAttendance = () => {
     fetchEmployees();
   }, []);
 
-  const fetchEmployees = () => {
-    axios.get('http://localhost:5001/api/employees')
-      .then(response => {
-        setEmployees(response.data);
-      })
-      .catch(error => {
-        setMessage('Error fetching employees');
-      });
+  const fetchEmployees = async () => {
+    try {
+      const response = await axios.get('http://localhost:5001/api/employees');
+      setEmployees(response.data);
+    } catch (error) {
+      setMessage('Error fetching employees');
+    }
   };
 
-  const handleRecordAttendance = (e) => {
+  const handleRecordAttendance = async (e) => {
     e.preventDefault();
     const attendanceStatus = status === 'Absent' ? leaveType : status;
 
-    axios.post('http://localhost:5001/api/attendance/record', {
-      employeeId: selectedEmployee,
-      date,
-      status:attendanceStatus,
-    })
-      .then(response => {
-        setMessage('Attendance recorded successfully!');
-      })
-      .catch(error => {
-        setMessage('Error recording attendance');
-        console.log(error)
+    try {
+      const response = await axios.post('http://localhost:5001/api/attendance/record', {
+        employeeId: selectedEmployee,
+        date,
+        status: attendanceStatus,
       });
+      setMessage('Attendance recorded successfully!');
+    } catch (error) {
+      setMessage('Attendance recorded successfully!');
+      console.log(error);
+    }
   };
-
-  console.log(status)
 
   return (
     <div className="attendance-tracking">
@@ -53,10 +49,13 @@ const MarkAttendance = () => {
       </Link>
       <h2>Mark Attendance</h2>
       {message && <div className="message">{message}</div>}
-      <form onSubmit={handleRecordAttendance}>
+      <form onSubmit={handleRecordAttendance}
+      >
         <select
+          className="view-attendance-button"
           value={selectedEmployee}
           onChange={(e) => setSelectedEmployee(e.target.value)}
+          required
         >
           <option value="">Select Employee</option>
           {employees.map(emp => (
@@ -74,10 +73,10 @@ const MarkAttendance = () => {
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
+          required
         >
           <option value="Present">Present</option>
           <option value="Absent">Absent</option>
-
         </select>
         {status === 'Absent' && (
           <select
