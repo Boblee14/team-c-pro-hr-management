@@ -1,97 +1,96 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-// import { Link } from 'react-router-dom';
-// import { FaArrowLeft } from 'react-icons/fa';
 import './salaryCalculation.css';
 
-const CalculateSalary = () => {
-  const [employeeId, setEmployeeId] = useState('');
-  const [salaryDetails, setSalaryDetails] = useState(null);
+const SalaryCalculation = () => {
   const [employees, setEmployees] = useState([]);
+  const [selectedEmployee, setSelectedEmployee] = useState('');
+  const [month, setMonth] = useState('');
+  const [year, setYear] = useState('');
+  const [salaryDetails, setSalaryDetails] = useState(null);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
     fetchEmployees();
   }, []);
 
-  const fetchEmployees = () => {
-    axios.get('http://localhost:5001/api/employees')
-      .then(response => {
-        setEmployees(response.data);
-        if (response.data.length > 0) {
-          setEmployeeId(response.data[0].employeeId);
-        }
-      })
-      .catch(error => {
-        setMessage('Error fetching employees');
-      });
+  const fetchEmployees = async () => {
+    try {
+      const response = await axios.get('http://localhost:5001/api/employees');
+      setEmployees(response.data);
+    } catch (error) {
+      setMessage('Error fetching employees');
+    }
   };
 
-  const handleCalculateSalary = () => {
-    axios.get(`http://localhost:5001/api/calculate-salary/${employeeId}`)
-      .then(response => {
-        setSalaryDetails(response.data.salaryInfo);
-        setMessage('');
-      })
-      .catch(error => {
-        if (error.response && error.response.data && error.response.data.error) {
-          setMessage(error.response.data.error);
-        } else {
-          setMessage('Error calculating salary');
-        }
-        setSalaryDetails(null);
+  const handleCalculateSalary = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:5001/api/salary/calculate', {
+        employeeId: selectedEmployee,
+        month: parseInt(month),
+        year: parseInt(year),
       });
+      setSalaryDetails(response.data);
+      setMessage('');
+    } catch (error) {
+      setMessage('Error calculating salary');
+    }
   };
 
   return (
     <div className="salary-calculation">
       <h2>Calculate Salary</h2>
       {message && <div className="message">{message}</div>}
-      <div className="salary-head ">
+      <form onSubmit={handleCalculateSalary}>
         <select
-          className="salary-placeholder"
-          value={employeeId}
-          onChange={(e) => setEmployeeId(e.target.value)}
+          value={selectedEmployee}
+          onChange={(e) => setSelectedEmployee(e.target.value)}
+          required
         >
+          <option value="">Select Employee</option>
           {employees.map(emp => (
-            <option key={emp._id} value={emp.employeeId}>
+            <option key={emp._id} value={emp._id}>
               {emp.name}
             </option>
           ))}
         </select>
-        <button onClick={handleCalculateSalary}>Calculate Salary</button>
-      </div>
+        <input
+          type="number"
+          placeholder="Month"
+          value={month}
+          onChange={(e) => setMonth(e.target.value)}
+          min="1"
+          max="12"
+          required
+        />
+        <input
+          type="number"
+          placeholder="Year"
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+          min="2000"
+          required
+        />
+        <button type="submit">Calculate Salary</button>
+      </form>
+
       {salaryDetails && (
-        <div>
-          <h3>Salary Details for Employee ID: {employeeId}</h3>
-          <table className="salary-table">
-            <tbody>
-              <tr>
-                <td>Present Days</td>
-                <td>{salaryDetails.presentDays}</td>
-              </tr>
-              <tr>
-                <td>Casual Leave Days</td>
-                <td>{salaryDetails.clDays}</td>
-              </tr>
-              <tr>
-                <td>Medical Leave Days</td>
-                <td>{salaryDetails.mlDays}</td>
-              </tr>
-              <tr>
-                <td>Absent Days</td>
-                <td>{salaryDetails.absentDays}</td>
-              </tr>
-              <tr>
-                <td>Total Salary</td>
-                <td>{salaryDetails.totalSalary}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="salary-details">
+          <h3>Salary Details</h3>
+          <p><strong>Total Salary:</strong> {salaryDetails.totalSalary}</p>
+          <p><strong>Base Salary:</strong> {salaryDetails.baseSalary}</p>
+          <p><strong>CL Pay:</strong> {salaryDetails.clPay}</p>
+          <p><strong>ML Pay:</strong> {salaryDetails.mlPay}</p>
+          <p><strong>Present Days:</strong> {salaryDetails.presentDays}</p>
+          <p><strong>CL Days:</strong> {salaryDetails.clDays}</p>
+          <p><strong>ML Days:</strong> {salaryDetails.mlDays}</p>
+          <p><strong>Total Working Days:</strong> {salaryDetails.totalWorkingDays}</p>
         </div>
       )}
     </div>
   );
 };
 
-export default CalculateSalary;
+export default SalaryCalculation;
