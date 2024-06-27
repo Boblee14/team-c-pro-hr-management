@@ -1,0 +1,91 @@
+.salary-calculation {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px;
+    font-family: Arial, sans-serif;
+    background-color: #1E1E1E;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    
+  }
+  
+  .salary-calc-input{
+    text-align: center;
+  }
+
+  .salary-calculation h2 {
+    text-align: center;
+    color: #fe8040;
+  }
+  
+  .message {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .salary-calc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+   
+  }
+
+  
+  .salary-calc-placeholder {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    color: #1E1E1E;
+    background-color: #e0e0e0;
+    margin-right: 10px;
+   
+  }
+  
+  .salary-calc-placeholder:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 128, 64, 0.7);
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #fe8040;
+    color: #1E1E1E;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #ff9a57;
+    transform: scale(1.05);
+  }
+  
+  button:active {
+    transform: scale(0.95);
+  }
+  
+  .salary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .salary-table th,
+  .salary-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    color: #e0e0e0;
+  }
+  
+  .salary-table th {
+    background-color: #fe8040;
+    color: #1E1E1E;
+  }
+  

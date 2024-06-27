@@ -31,7 +31,7 @@ const Login = () => {
       <div className="form-box login">
         <form onSubmit={loginSubmitHandler}>
           <h1>Login</h1>
-          <div className="input-box">
+          <div className="input-box ">
             <input
               type="text"
               placeholder="Enter your username"

@@ -129,7 +129,7 @@ const EmployeeDetails = () => {
           className='addemployee-input'
           type="number" 
           name="salary" 
-          placeholder="Salary" 
+          placeholder="Salary Per/month" 
           value={newEmployee.salary} 
           onChange={handleInputChange} 
           required 
