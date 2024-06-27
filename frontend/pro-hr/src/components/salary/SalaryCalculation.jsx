@@ -7,7 +7,7 @@ const SalaryCalculation = () => {
   const [message, setMessage] = useState('');
 
   const handleCalculateSalary = () => {
-    axios.get(`http://localhost:5001/api/attendance/calculate-salary/${employeeId}`)
+    axios.get(`http://localhost:5001/api/calculate-salary/${employeeId}`)
       .then(response => {
         setSalaryDetails(response.data);
         setMessage('');
