@@ -2,6 +2,9 @@ const logindetails = require("../models/user.models");
 const Employee = require("../models/dashboard.models")
 const Attendance = require("../models/attendance.models")
 const mongoose = require('mongoose')
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+const path = require('path');
 
 const loginUser = async (req, res) => {
     const { username, password } = req.body;
@@ -113,53 +116,135 @@ const deleteEmployee = async (req, res) => {
     }
 };
 
-const employeeAttendance = async (req, res) => {
-  const { employeeId, date, status } = req.body;
+const employeeAttendance =  async (req, res) => {
+  const { records } = req.body;
+
   try {
-    const attendance = new Attendance({ employeeId, date, status });
-    await attendance.save();
+    const bulkOps = records.map((record) => ({
+      updateOne: {
+        filter: { employeeId: record.employeeId, date: record.date },
+        update: { $set: record },
+        upsert: true,
+      },
+    }));
 
-    if (status === 'CL') {
-      await Employee.findByIdAndUpdate(employeeId, { $inc: { cl: 1 } });
-    } else if (status === 'ML') {
-      await Employee.findByIdAndUpdate(employeeId, { $inc: { ml: 1 } });
-    }
-
-    res.status(201).send(attendance);
+    await Attendance.bulkWrite(bulkOps);
+    res.status(201).send({ message: 'Attendance recorded successfully' });
   } catch (error) {
-    res.status(500).send({ error: 'Error recording attendance backend' });
+    console.error('Error recording attendance', error);
+    res.status(500).send({ message: 'Error recording attendance' });
   }
-}
+};
 
-const specificEmployeeAttendance = async (req, res) => {
-  const { employeeId } = req.params;
-  // if (!mongoose.Types.ObjectId.isValid(employeeId)) {
-  //   return res.status(400).send({ error: 'Invalid employee ID' });
-  // }
+const viewAttendanceByDate = async (req, res) => {
+  const { date } = req.params;
+  const startOfDay = new Date(date);
+  const endOfDay = new Date(date);
+  endOfDay.setHours(23, 59, 59, 999);
+
   try {
-    const records = await Attendance.find({ employeeId });
-    if (records.length === 0) {
-      return res.status(404).json({ error: 'No attendance records found for this employee' });
-    }
-    res.status(200).json(records);
+    const attendanceRecords = await Attendance.find({
+      date: { $gte: startOfDay, $lte: endOfDay }
+    });
 
+    if (attendanceRecords.length === 0) {
+      return res.status(404).json({ error: 'No attendance records found for this date' });
+    }
+
+    const detailedRecords = await Promise.all(
+      attendanceRecords.map(async (record) => {
+        const employee = await Employee.findOne({ employeeId: record.employeeId });
+        return {
+          ...record.toObject(),
+          name: employee.name
+        };
+      })
+    );
+
+    res.status(200).json(detailedRecords);
   } catch (error) {
     console.error('Error fetching attendance records:', error);
-    res.status(500).send({ error: 'Error fetching attendance records' });
+    res.status(500).json({ error: 'Error fetching attendance records' });
   }
-}
+};
 
 const salaryDetails =  async (req, res) => {
   const { employeeId } = req.params;
+  const { month, year } = req.query;
   try {
-    const attendanceRecords = await Attendance.find({ employeeId }).sort({ date: 1 });
-    const employee = await Employee.findById(employeeId);
+    const attendanceRecords = await Attendance.find({ 
+      employeeId,
+      date: {
+        $gte: new Date(year, month - 1, 1),
+        $lt: new Date(year, month, 1)
+      }
+    });
+    const employee = await Employee.findOne({ employeeId: employeeId });
     
     if (!employee) {
       return res.status(404).send({ error: 'Employee not found' });
     }
 
     const dailySalary = employee.salary / 30; 
+    let workingDays = 0;
+    let clDays = 0;
+    let mlDays = 0;
+    let absentDays = 0;
+      
+    attendanceRecords.forEach(record => {
+      if (record.status === 'Present') {
+        workingDays++;
+      } else if (record.status === 'CL') {
+        clDays++;
+      } else if (record.status === 'ML') {
+        mlDays++;
+      } else if (record.status === 'Absent') {
+        absentDays++;
+      }
+    });
+
+    const totalDays = workingDays + clDays+mlDays;
+    const totalPaidDays = workingDays ;
+    const totalUnpaidDays = mlDays + absentDays + clDays;
+    const totalSalary = totalPaidDays * dailySalary;
+
+    res.send({ 
+      employeeId,
+      employeeSalary : employee.salary,
+      totalDays,
+      workingDays,
+      clDays,
+      mlDays,
+      absentDays,
+      totalPaidDays,
+      totalUnpaidDays,
+      totalSalary,
+    });
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ error: 'Error calculating salary backend' });
+  }
+}
+
+const generateSalarySlip = async (req, res) => {
+  const { employeeId } = req.params;
+  const { month, year } = req.query;
+
+  try {
+    const employee = await Employee.findOne({ employeeId });
+    if (!employee) {
+      return res.status(404).send({ error: 'Employee not found' });
+    }
+
+    const attendanceRecords = await Attendance.find({
+      employeeId,
+      date: {
+        $gte: new Date(year, month - 1, 1),
+        $lt: new Date(year, month, 1),
+      },
+    });
+
+    const dailySalary = employee.salary / 30;
     let workingDays = 0;
     let clDays = 0;
     let mlDays = 0;
@@ -178,23 +263,47 @@ const salaryDetails =  async (req, res) => {
     });
 
     const totalPaidDays = workingDays + clDays;
-    const totalUnpaidDays = mlDays + absentDays;
     const totalSalary = totalPaidDays * dailySalary;
+    const directoryPath = path.join(__dirname, '..', 'salary_slips');
+    if (!fs.existsSync(directoryPath)) {
+      fs.mkdirSync(directoryPath);
+    }
 
-    res.send({ 
-      employeeId,
-      workingDays,
-      clDays,
-      mlDays,
-      absentDays,
-      totalPaidDays,
-      totalUnpaidDays,
-      totalSalary,
+    const doc = new PDFDocument();
+    const filename = `Salary_Slip_${employeeId}_${month}_${year}.pdf`;
+    const filepath = path.join(directoryPath, filename);
+    const writeStream = fs.createWriteStream(filepath);
+    doc.pipe(writeStream);
+
+    doc.pipe(fs.createWriteStream(filepath));
+
+    doc.fontSize(20).text('Salary Slip', { align: 'center' });
+    doc.fontSize(16).text(`Employee ID: ${employeeId}`, 100, 100);
+    doc.fontSize(16).text(`Name: ${employee.name}`, 100, 120);
+    doc.fontSize(16).text(`Month: ${month}`, 100, 140);
+    doc.fontSize(16).text(`Year: ${year}`, 100, 160);
+    doc.fontSize(16).text(`Base Salary: ${employee.salary}`, 100, 180);
+    doc.fontSize(16).text(`Total Paid Days: ${totalPaidDays}`, 100, 200);
+    doc.fontSize(16).text(`Total Salary: ${totalSalary}`, 100, 220);
+
+    doc.end();
+
+    writeStream.on('finish', () => {
+      res.download(filepath, filename, (err) => {
+        if (err) {
+          console.error('Error sending file:', err);
+          res.status(500).send({ error: 'Error sending salary slip' });
+        } else {
+          console.log('File sent successfully:', filepath);
+        }
+      });
     });
   } catch (error) {
-    res.status(500).send({ error: 'Error calculating salary' });
+    console.error('Error generating salary slip:', error);
+    res.status(500).send({ error: 'Error generating salary slip' });
   }
-}
+};
 
-module.exports = { loginUser, getAllEmployees, addEmployee, updateEmployee, deleteEmployee, getSpecificEmployee, employeeAttendance, specificEmployeeAttendance, salaryDetails };
+
+module.exports = { loginUser, getAllEmployees, addEmployee, updateEmployee, deleteEmployee, getSpecificEmployee, employeeAttendance, viewAttendanceByDate, salaryDetails, generateSalarySlip };
 

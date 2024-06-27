@@ -41,9 +41,10 @@ const MarkAttendance = () => {
       status: attendance[employee.employeeId]?.status || 'Absent',
       leaveType: attendance[employee.employeeId]?.status === 'Absent' ? (attendance[employee.employeeId]?.leaveType || 'CL') : null,
     }));
+    console.log(records)
 
     try {
-      await axios.post('http://localhost:5001/api/attendance/record/bulk', { records });
+      await axios.post('http://localhost:5001/api/attendance/record', { records });
       setMessage('Attendance recorded successfully!');
     } catch (error) {
       setMessage('Error recording attendance');

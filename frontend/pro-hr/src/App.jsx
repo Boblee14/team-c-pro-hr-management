@@ -8,7 +8,7 @@ import AddEmployee from './components/addemployee/AddEmployee';
 import EmployeeDetails from './components/viewemployee/EmployeeDetails';
 import AttendanceTracking from './components/attendancetracking/AttendanceTracking';
 import SalaryCalculation from './components/salary/SalaryCalculation';
-// import SalarySlipGeneration from './components/SalarySlipGeneration';
+import SalarySlipGeneration from './components/salary/SalarySlipGeneration';
 import Welcome from './pages/Dashboard/welcome';
 import { AuthProvider } from './context/AuthContext';
 import UpdateEmployee from './components/viewemployee/UpdateEmployee';
@@ -29,7 +29,7 @@ function App() {
           <Route path="employee-details" element={<EmployeeDetails />} />
           <Route path="attendance-tracking" element={<AttendanceTracking />} />
           <Route path="salary-calculation" element={<SalaryCalculation />} />
-          {/* <Route path="salary-slip-generation" ele  ment={<SalarySlipGeneration />} /> */}
+          <Route path="salary-slip-generation" element={<SalarySlipGeneration />} />
         </Route>
         <Route path="/update-employee/:id" element={<UpdateEmployee />} />
         <Route path="/mark-attendance" element={<MarkAttendance />} /> {/* Add route for Mark Attendance */}

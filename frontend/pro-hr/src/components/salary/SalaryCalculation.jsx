@@ -28,10 +28,8 @@ const SalaryCalculation = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5001/api/salary/calculate', {
-        employeeId: selectedEmployee,
-        month: parseInt(month),
-        year: parseInt(year),
+      const response = await axios.get(`http://localhost:5001/api//calculate-salary/${selectedEmployee}`,{
+        params: { month, year }
       });
       setSalaryDetails(response.data);
       setMessage('');
@@ -41,7 +39,8 @@ const SalaryCalculation = () => {
       console.log(error);
     }
   };
-
+  // console.log(selectedEmployee)
+  // console.log(employees)
   return (
     <div className="salary-calculation">
       <h2>Calculate Salary</h2>
@@ -54,8 +53,9 @@ const SalaryCalculation = () => {
         >
           <option value="">Select Employee</option>
           {employees.map(emp => (
-            <option key={emp._id} value={emp._id}>
+            <option key={emp._id} value={emp.employeeId}> 
               {emp.name}
+
             </option>
           ))}
         </select>
@@ -83,14 +83,15 @@ const SalaryCalculation = () => {
         <div className="salary-details">
           <h3>Salary Details</h3>
           <p><strong>Total Salary:</strong> {salaryDetails.totalSalary}</p>
-          <p><strong>Base Salary:</strong> {salaryDetails.baseSalary}</p>
+          <p><strong>Base Salary:</strong> {salaryDetails.employeeSalary}</p>
           <p><strong>CL Pay:</strong> {salaryDetails.clPay}</p>
           <p><strong>ML Pay:</strong> {salaryDetails.mlPay}</p>
-          <p><strong>Present Days:</strong> {salaryDetails.presentDays}</p>
+          <p><strong>Present Days:</strong> {salaryDetails.workingDays}</p>
           <p><strong>CL Days:</strong> {salaryDetails.clDays}</p>
           <p><strong>ML Days:</strong> {salaryDetails.mlDays}</p>
-          <p><strong>Total Working Days:</strong> {salaryDetails.totalWorkingDays}</p>
+          <p><strong>Total Working Days:</strong> {salaryDetails.totalDays}</p>
         </div>
+        
       )}
     </div>
   );

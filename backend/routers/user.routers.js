@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { loginUser, addEmployee, getAllEmployees, updateEmployee, deleteEmployee, getSpecificEmployee, employeeAttendance, specificEmployeeAttendance, salaryDetails } = require("../controllers/user.controller");
+const { loginUser, addEmployee, getAllEmployees, updateEmployee, deleteEmployee, getSpecificEmployee, employeeAttendance, viewAttendanceByDate, salaryDetails, generateSalarySlip } = require("../controllers/user.controller");
 const multer = require('multer');
 const fs = require('fs');
 
@@ -31,8 +31,10 @@ router.delete('/employees/:id', deleteEmployee);
 
 router.post('/attendance/record', employeeAttendance)
 
-router.get('/attendance/:employeeId',specificEmployeeAttendance)
+router.get('/attendance/date/:date',viewAttendanceByDate)
 
 router.get('/calculate-salary/:employeeId',salaryDetails)
+
+router.get('/generate-salary-slip/:employeeId', generateSalarySlip);
 
 module.exports = router;
