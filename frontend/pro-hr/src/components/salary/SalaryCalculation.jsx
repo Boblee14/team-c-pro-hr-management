@@ -10,7 +10,6 @@ const SalaryCalculation = () => {
   const [salaryDetails, setSalaryDetails] = useState(null);
   const [message, setMessage] = useState('');
 
-      
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -28,8 +27,8 @@ const SalaryCalculation = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.get(`http://localhost:5001/api//calculate-salary/${selectedEmployee}`,{
-        params: { month, year }
+      const response = await axios.get(`http://localhost:5001/api/calculate-salary/${selectedEmployee}`, {
+        params: { month: getMonthNumber(month), year }
       });
       setSalaryDetails(response.data);
       setMessage('');
@@ -39,8 +38,20 @@ const SalaryCalculation = () => {
       console.log(error);
     }
   };
-  // console.log(selectedEmployee)
-  // console.log(employees)
+
+  // Function to convert month name to number
+  const getMonthNumber = (monthName) => {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"];
+    return monthNames.indexOf(monthName) + 1;
+  };
+
+  // Options for month dropdown
+  const monthOptions = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
   return (
     <div className="salary-calculation">
       <h2>Calculate Salary</h2>
@@ -53,21 +64,23 @@ const SalaryCalculation = () => {
         >
           <option value="">Select Employee</option>
           {employees.map(emp => (
-            <option key={emp._id} value={emp.employeeId}> 
+            <option key={emp._id} value={emp.employeeId}>
               {emp.name}
-
             </option>
           ))}
         </select>
-        <input
-          type="number"
-          placeholder="Month"
+        <select
           value={month}
           onChange={(e) => setMonth(e.target.value)}
-          min="1"
-          max="12"
           required
-        />
+        >
+          <option value="">Select Month</option>
+          {monthOptions.map((monthName, index) => (
+            <option key={index} value={monthName}>
+              {monthName}
+            </option>
+          ))}
+        </select>
         <input
           type="number"
           placeholder="Year"
@@ -82,16 +95,39 @@ const SalaryCalculation = () => {
       {salaryDetails && (
         <div className="salary-details">
           <h3>Salary Details</h3>
-          <p><strong>Total Salary:</strong> {salaryDetails.totalSalary}</p>
-          <p><strong>Base Salary:</strong> {salaryDetails.employeeSalary}</p>
-          <p><strong>CL Pay:</strong> {salaryDetails.clPay}</p>
-          <p><strong>ML Pay:</strong> {salaryDetails.mlPay}</p>
-          <p><strong>Present Days:</strong> {salaryDetails.workingDays}</p>
-          <p><strong>CL Days:</strong> {salaryDetails.clDays}</p>
-          <p><strong>ML Days:</strong> {salaryDetails.mlDays}</p>
-          <p><strong>Total Working Days:</strong> {salaryDetails.totalDays}</p>
+          <table className="salary-table">
+            <tbody>
+              <tr>
+                <td><strong>Base Salary:</strong></td>
+                <td>{salaryDetails.employeeSalary}</td>
+              </tr>
+              <tr>
+                <td><strong>Present Days:</strong></td>
+                <td>{salaryDetails.workingDays}</td>
+              </tr>
+              <tr>
+                <td><strong>CL Days:</strong></td>
+                <td>{salaryDetails.clDays}</td>
+              </tr>
+              <tr>
+                <td><strong>ML Days:</strong></td>
+                <td>{salaryDetails.mlDays}</td>
+              </tr>
+              <tr>
+                <td><strong>Excess CL Payoff:</strong></td>
+                <td>{salaryDetails.excessCLPayoff}</td>
+              </tr>
+              <tr>
+                <td><strong>Excess ML Payoff:</strong></td>
+                <td>{salaryDetails.excessMLPayoff}</td>
+              </tr>
+              <tr>
+                <td><strong>Total Salary:</strong></td>
+                <td>{salaryDetails.totalSalary}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        
       )}
     </div>
   );
