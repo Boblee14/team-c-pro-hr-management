@@ -168,63 +168,53 @@ const viewAttendanceByDate = async (req, res) => {
   }
 };
 
-const salaryDetails =  async (req, res) => {
+const salaryDetails = async (req, res) => {
   const { employeeId } = req.params;
   const { month, year } = req.query;
+
   try {
-    const attendanceRecords = await Attendance.find({ 
-      employeeId,
-      date: {
-        $gte: new Date(year, month - 1, 1),
-        $lt: new Date(year, month, 1)
-      }
-    });
-    const employee = await Employee.findOne({ employeeId: employeeId });
-    
+    const employee = await Employee.findOne({ employeeId });
     if (!employee) {
-      return res.status(404).send({ error: 'Employee not found' });
+      return res.status(404).json({ error: 'Employee not found' });
     }
 
-    const dailySalary = employee.salary / 30; 
-    let workingDays = 0;
-    let clDays = 0;
-    let mlDays = 0;
-    let absentDays = 0;
-      
-    attendanceRecords.forEach(record => {
-      if (record.status === 'Present') {
-        workingDays++;
-      } else if (record.status === 'CL') {
-        clDays++;
-      } else if (record.status === 'ML') {
-        mlDays++;
-      } else if (record.status === 'Absent') {
-        absentDays++;
+    const attendanceRecords = await Attendance.find({
+      employeeId,
+      date: {
+        $gte: new Date(`${year}-${month}-01`),
+        $lt: new Date(`${year}-${parseInt(month) + 1}-01`)
       }
     });
 
-    const totalDays = workingDays + clDays+mlDays;
-    const totalPaidDays = workingDays ;
-    const totalUnpaidDays = mlDays + absentDays + clDays;
-    const totalSalary = totalPaidDays * dailySalary;
+    const workingDays = attendanceRecords.filter(record => record.status === 'Present').length;
+    const clDays = attendanceRecords.filter(record => record.leaveType === 'CL').length;
+    const mlDays = attendanceRecords.filter(record => record.leaveType === 'ML').length;
 
-    res.send({ 
-      employeeId,
-      employeeSalary : employee.salary,
-      totalDays,
+    const excessCL = clDays > 2 ? clDays - 2 : 0;
+    const excessML = mlDays > 2 ? mlDays - 2 : 0;
+
+    const excessCLPayoff = excessCL * 1000;
+    const excessMLPayoff = excessML * 500;
+
+    const baseSalary = employee.salary;
+    const totalSalary = baseSalary - excessCLPayoff - excessMLPayoff;
+
+    const salaryDetails = {
+      employeeSalary: baseSalary,
       workingDays,
       clDays,
       mlDays,
-      absentDays,
-      totalPaidDays,
-      totalUnpaidDays,
+      excessCLPayoff,
+      excessMLPayoff,
       totalSalary,
-    });
+    };
+
+    res.json(salaryDetails);
   } catch (error) {
-    console.log(error)
-    res.status(500).send({ error: 'Error calculating salary backend' });
+    res.status(500).json({ error: 'Error calculating salary' });
   }
-}
+};
+
 
 const generateSalarySlip = async (req, res) => {
   const { employeeId } = req.params;
@@ -233,22 +223,20 @@ const generateSalarySlip = async (req, res) => {
   try {
     const employee = await Employee.findOne({ employeeId });
     if (!employee) {
-      return res.status(404).send({ error: 'Employee not found' });
+      return res.status(404).json({ error: 'Employee not found' });
     }
 
     const attendanceRecords = await Attendance.find({
       employeeId,
       date: {
         $gte: new Date(year, month - 1, 1),
-        $lt: new Date(year, month, 1),
-      },
+        $lt: new Date(year, month, 1)
+      }
     });
 
-    const dailySalary = employee.salary / 30;
     let workingDays = 0;
     let clDays = 0;
     let mlDays = 0;
-    let absentDays = 0;
 
     attendanceRecords.forEach(record => {
       if (record.status === 'Present') {
@@ -257,52 +245,64 @@ const generateSalarySlip = async (req, res) => {
         clDays++;
       } else if (record.status === 'ML') {
         mlDays++;
-      } else if (record.status === 'Absent') {
-        absentDays++;
       }
     });
 
-    const totalPaidDays = workingDays + clDays;
-    const totalSalary = totalPaidDays * dailySalary;
-    const directoryPath = path.join(__dirname, '..', 'salary_slips');
-    if (!fs.existsSync(directoryPath)) {
-      fs.mkdirSync(directoryPath);
-    }
+    const clLimit = 2;
+    const mlLimit = 2;
+    const excessCL = clDays > clLimit ? clDays - clLimit : 0;
+    const excessML = mlDays > mlLimit ? mlDays - mlLimit : 0;
+    const excessCLPayoff = excessCL * 1000; // Adjust these payoff amounts as needed
+    const excessMLPayoff = excessML * 500;  // Adjust these payoff amounts as needed
+
+    const baseSalary = employee.salary;
+    const workingDaysPerMonth = 22;
+    const dailySalary = baseSalary / workingDaysPerMonth;
+    const totalPaidDays = workingDays + Math.min(clDays, clLimit);
+    const totalSalary = totalPaidDays * dailySalary - excessCLPayoff - excessMLPayoff;
+
+    const salaryDetails = {
+      employeeSalary: baseSalary,
+      workingDays,
+      clDays,
+      mlDays,
+      excessCLPayoff,
+      excessMLPayoff,
+      totalSalary,
+      month,
+      year
+    };
 
     const doc = new PDFDocument();
-    const filename = `Salary_Slip_${employeeId}_${month}_${year}.pdf`;
-    const filepath = path.join(directoryPath, filename);
-    const writeStream = fs.createWriteStream(filepath);
-    doc.pipe(writeStream);
+    let filename = `Salary_Slip_${employee.employeeId}_${salaryDetails.month}_${salaryDetails.year}.pdf`;
+    filename = encodeURIComponent(filename);
 
-    doc.pipe(fs.createWriteStream(filepath));
+    res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-type', 'application/pdf');
 
-    doc.fontSize(20).text('Salary Slip', { align: 'center' });
-    doc.fontSize(16).text(`Employee ID: ${employeeId}`, 100, 100);
-    doc.fontSize(16).text(`Name: ${employee.name}`, 100, 120);
-    doc.fontSize(16).text(`Month: ${month}`, 100, 140);
-    doc.fontSize(16).text(`Year: ${year}`, 100, 160);
-    doc.fontSize(16).text(`Base Salary: ${employee.salary}`, 100, 180);
-    doc.fontSize(16).text(`Total Paid Days: ${totalPaidDays}`, 100, 200);
-    doc.fontSize(16).text(`Total Salary: ${totalSalary}`, 100, 220);
+    doc.pipe(res);
+
+    doc.fontSize(16).text('Salary Slip', { align: 'center' });
+    doc.fontSize(14).text(`Employee ID: ${employee.employeeId}`);
+    doc.fontSize(14).text(`Name: ${employee.name}`);
+    doc.fontSize(14).text(`Month: ${salaryDetails.month}`);
+    doc.fontSize(14).text(`Year: ${salaryDetails.year}`);
+
+    doc.moveDown();
+    doc.fontSize(12).text(`Base Salary: ${salaryDetails.employeeSalary}`);
+    doc.text(`Present Days: ${salaryDetails.workingDays}`);
+    doc.text(`CL Days: ${salaryDetails.clDays}`);
+    doc.text(`ML Days: ${salaryDetails.mlDays}`);
+    doc.text(`Excess CL Payoff: ${salaryDetails.excessCLPayoff}`);
+    doc.text(`Excess ML Payoff: ${salaryDetails.excessMLPayoff}`);
+    doc.text(`Total Salary: ${salaryDetails.totalSalary}`);
 
     doc.end();
-
-    writeStream.on('finish', () => {
-      res.download(filepath, filename, (err) => {
-        if (err) {
-          console.error('Error sending file:', err);
-          res.status(500).send({ error: 'Error sending salary slip' });
-        } else {
-          console.log('File sent successfully:', filepath);
-        }
-      });
-    });
   } catch (error) {
-    console.error('Error generating salary slip:', error);
-    res.status(500).send({ error: 'Error generating salary slip' });
+    res.status(500).json({ error: 'Error generating salary slip' });
   }
 };
+
 
 
 module.exports = { loginUser, getAllEmployees, addEmployee, updateEmployee, deleteEmployee, getSpecificEmployee, employeeAttendance, viewAttendanceByDate, salaryDetails, generateSalarySlip };
