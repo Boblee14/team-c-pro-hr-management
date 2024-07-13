@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
 import axios from 'axios';
 import './employeedeatils.css'; 
 
@@ -50,6 +51,9 @@ const UpdateEmployee = () => {
     <div className="employee-details">
       {employee && (
         <form className="updemployee-form" onSubmit={handleSubmit}>
+          <Link to="/dashboard/employee-details" className="back-link">
+        <FaArrowLeft className="back-icon" /> Back
+      </Link>
           <h2 className="updemployee-head">Update Employee</h2>
           {message && (
             <div className={`message ${messageType}`}>
@@ -64,7 +68,7 @@ const UpdateEmployee = () => {
           <input className="updemployee-input" type="file" name="profilePicture" />
           <div className="button-container">
             <button className="updemployee-button" type="submit">Update</button>
-            <button className="cancel-button" type="button" onClick={handleCancel}>Cancel</button>
+
           </div>
         </form>
       )}

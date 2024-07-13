@@ -1,8 +1,11 @@
- .wrapper {
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+.wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5%;
+  min-height: 100vh;
+  
 }
 
 .form-box {
@@ -12,6 +15,7 @@
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   color: #fff;
+  animation: fadeIn 1s ease;
 }
 
 .form-box h1 { 
@@ -34,10 +38,15 @@
   background-color: #303030;
   border: none;
   color: #fff;
+  transition: background-color 0.3s ease;
 }
 
 .input-box input::placeholder {
   color: #bdc3c7;
+}
+
+.input-box input:focus {
+  background-color: #404040;
 }
 
 .input-box .icon {
@@ -61,16 +70,17 @@
   margin-right: auto;
 }
 
-.Remember-forgot button {
+.forgot-password  {
   background-color: transparent;
   border: none;
   color: #cccccc;
   cursor: pointer;
   text-decoration: underline;
   padding: 0;
+  transition: color 0.3s ease;
 }
 
-.Remember-forgot button:hover {
+.forgot-password:hover {
   color: #fe8040;
 }
 
@@ -106,8 +116,8 @@
     padding: 10px;
   }
 
-  .btn{
-    width: calc(100% + 0px);  
+  .btn {
+    width: 100%;
   }
 }
 
@@ -126,6 +136,15 @@
 
   .btn {
     font-size: 14px;
-    width: calc(100% + 0px);
+    width: 100%;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

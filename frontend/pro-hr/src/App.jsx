@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login/Login';
-import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import Home from './pages/Home/Home';
 import Navbar from './components/navbar/Navbar';
 import Dashboard from './pages/Dashboard/dashboard';
@@ -22,7 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+       
         <Route path="/dashboard" element={<Dashboard />}>
           <Route path="" element={<Welcome />} />
           <Route path="add-employee" element={<AddEmployee />} />

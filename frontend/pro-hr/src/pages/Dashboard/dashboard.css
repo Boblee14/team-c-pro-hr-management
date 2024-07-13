@@ -1,29 +1,37 @@
+
 /* Dashboard Container */
 .dashboard {
   display: flex;
-  height: 89vh;
+  height: 100vh;
   font-family: 'Montserrat', sans-serif;
 }
 
 /* Navigation Styles */
 .dashboard-nav {
-  width: 300px;
+  width: 80px;
   background: #1E1E1E;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  animation: slideInLeft 0.5s ease-in-out;
   padding: 20px 0;
+  position: relative;
+  transition: width 0.3s ease;
 }
+
 
 .dashboard-nav ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
   width: 100%;
+  margin-left: 15px;
+  
 }
 
 .dashboard-nav li {
   margin: 15px 0;
+  position: relative;
+  
 }
 
 .dashboard-nav a {
@@ -42,8 +50,35 @@
   transform: scale(1.05);
 }
 
+/* Tooltip Styles */
+.dashboard-nav a::after {
+  content: attr(data-tooltip);
+  background: #000;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dashboard-nav a:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(10px);
+}
+
 .dashboard-nav a span {
   margin-left: 10px;
+  display: none;
+}
+
+.dashboard-nav.expanded a span {
+  display: inline;
 }
 
 .MuiSvgIcon-root {
@@ -66,6 +101,7 @@
     display: flex;
     overflow-x: auto;
     padding: 20px 0;
+    
   }
 
   .dashboard-nav ul {
@@ -138,6 +174,7 @@
 
 .welcome header {
   margin-bottom: 20px;
+  animation: slideInUp 0.5s ease-in-out;
 }
 
 .welcome header h1 {
@@ -159,7 +196,7 @@
   font-size: 28px;
   margin-bottom: 20px;
   color: #fe8040;
-  animation: slideInLeft 0.5s ease-in-out;
+  animation: slideInUp 0.5s ease-in-out;
 }
 
 .features-grid {
@@ -179,6 +216,7 @@
   margin: 10px;
   padding: 15px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 1s ease-in-out;
 }
 
 .feature-item:hover {
@@ -190,17 +228,18 @@
   font-size: 22px;
   margin-bottom: 10px;
   color: #fe8040;
-  animation: slideInUp 0.5s ease-in-out;
+  /* animation: slideInUp 0.5s ease-in-out; */
 }
 
 .feature-item p {
   font-size: 16px;
   color: #bdc3c7;
-  animation: slideInUp 0.5s ease-in-out;
+  /* animation: slideInUp 0.5s ease-in-out; */
+  
 }
 
 /* Animations */
-@keyframes fadeIn {
+@keyframes fadeInUp {
   0% { opacity: 0; }
   100% { opacity: 1; }
 }
@@ -217,6 +256,9 @@
 
 /* Responsive Styles for Features */
 @media (max-width: 768px) {
+  .dashboard{
+    height: 100%;
+  }
   .feature-item {
     flex: 1 1 calc(50% - 20px);
   }
@@ -226,6 +268,9 @@
 }
 
 @media (max-width: 480px) {
+  .dashboard{
+    height: 100%;
+  }
   .feature-item {
     flex: 1 1 100%;
   }

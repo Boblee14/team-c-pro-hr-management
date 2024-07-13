@@ -1,4 +1,5 @@
-import React from 'react';
+// Dashboard.jsx
+import React, { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -18,13 +19,19 @@ const navItems = [
 ];
 
 const Dashboard = () => {
+  const [expanded, setExpanded] = useState(false);
+
+  const toggleNav = () => {
+    setExpanded(!expanded);
+  };
+
   return (
     <div className="dashboard">
-      <nav className="dashboard-nav">
+      <nav className={`dashboard-nav ${expanded ? 'expanded' : ''}`}>
         <ul>
           {navItems.map((item, index) => (
             <li key={index}>
-              <Link to={item.path}>
+              <Link to={item.path} data-tooltip={item.label}>
                 {item.icon}
                 <span>{item.label}</span>
               </Link>

@@ -1,76 +1,101 @@
 /* Navbar Styles */
 .navbar {
-    display: flex;
-    align-items: center;
-    font-family: sans-serif;
-    justify-content: space-between;
-    padding: 3px 8rem;
-    background-color: #1E1E1E;
+  display: flex;
+  align-items: center;
+  font-family: sans-serif;
+  justify-content: space-between;
+  padding: 3px 8rem;
+  background-color: #1E1E1E;
+  transition: all 0.3s ease;
+  animation: slideInDown 1s;
+}
+
+.link-style-div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.login-head {
+  color: #FE8040;
+  font-size: 32px;
+  animation: fadeInLeft 1s;
+}
+
+.login-nav {
+  padding: 10px 15px;
+  font-size: 18px;
+  background-color: #FE8040;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.login-nav:hover {
+  background-color: #303030;
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 10px 2rem;
   }
-  
-  .link-style-div {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+
+  .link-login-head {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
   }
-  
+
   .login-head {
-    color: #FE8040;
-    font-size: 32px;
+    font-size: 24px;
   }
-  
+
+  .link-style-div {
+    width: 100%;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
   .login-nav {
-    padding: 10px 15px;
-    font-size: 18px;
-    background-color: #FE8040;
-    border: none;
-    border-radius: 5px;
+    font-size: 16px;
+    padding: 8px 12px;
   }
-  
-  .login-nav:hover {
-    background-color: #303030;
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 10px 1rem;
   }
-  
-  /* Responsive Styles for Navbar */
-  @media (max-width: 768px) {
-    .navbar {
-      flex-direction: column;
-      padding: 3px 2rem;
-    }
-  
-    .link-login-head {
-      width: 100%;
-      text-align: center;
-    }
-  
-    .login-head {
-      font-size: 24px;
-    }
-  
-    .link-style-div {
-      width: 100%;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-  
-    .login-nav {
-      font-size: 16px;
-      padding: 8px 12px;
-    }
+
+  .login-head {
+    font-size: 20px;
   }
-  
-  @media (max-width: 480px) {
-    .navbar {
-      padding: 3px 1rem;
-    }
-  
-    .login-head {
-      font-size: 20px;
-    }
-  
-    .login-nav {
-      font-size: 14px;
-      padding: 6px 10px;
-    }
+
+  .login-nav {
+    font-size: 14px;
+    padding: 6px 10px;
   }
-  
+}
+
+@keyframes slideInDown {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
