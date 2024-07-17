@@ -35,60 +35,71 @@ const SalaryCalculation = () => {
     } catch (error) {
       setMessage('Error calculating salary');
       setSalaryDetails(null);
-      console.log(error);
     }
   };
 
-  // Function to convert month name to number
   const getMonthNumber = (monthName) => {
     const monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"];
     return monthNames.indexOf(monthName) + 1;
   };
 
-  // Options for month dropdown
   const monthOptions = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
+
+  // Generate year options from 2000 to current year
+  const currentYear = new Date().getFullYear();
+  const startYear = 2000;
+  const yearOptions = Array.from({ length: currentYear - startYear + 1 }, (_, index) => startYear + index);
 
   return (
     <div className="salary-calculation">
       <h2>Calculate Salary</h2>
       {message && <div className="message">{message}</div>}
       <form onSubmit={handleCalculateSalary}>
-        <select
-          value={selectedEmployee}
-          onChange={(e) => setSelectedEmployee(e.target.value)}
-          required
-        >
-          <option value="">Select Employee</option>
-          {employees.map(emp => (
-            <option key={emp._id} value={emp.employeeId}>
-              {emp.name}
-            </option>
-          ))}
-        </select>
-        <select
-          value={month}
-          onChange={(e) => setMonth(e.target.value)}
-          required
-        >
-          <option value="">Select Month</option>
-          {monthOptions.map((monthName, index) => (
-            <option key={index} value={monthName}>
-              {monthName}
-            </option>
-          ))}
-        </select>
-        <input
-          type="number"
-          placeholder="Year"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-          min="2000"
-          required
-        />
+        <div className="salary-calc-head">
+          <select
+            className="salary-calc-placeholder"
+            value={selectedEmployee}
+            onChange={(e) => setSelectedEmployee(e.target.value)}
+            required
+          >
+            <option value="">Select Employee</option>
+            {employees.map(emp => (
+              <option key={emp._id} value={emp.employeeId}>
+                {emp.name}
+              </option>
+            ))}
+          </select>
+          <select
+            className="salary-calc-placeholder"
+            value={month}
+            onChange={(e) => setMonth(e.target.value)}
+            required
+          >
+            <option value="">Select Month</option>
+            {monthOptions.map((monthName, index) => (
+              <option key={index} value={monthName}>
+                {monthName}
+              </option>
+            ))}
+          </select>
+          <select
+            className="salary-calc-placeholder"
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            required
+          >
+            <option value="">Select Year</option>
+            {yearOptions.map((yearOption) => (
+              <option key={yearOption} value={yearOption}>
+                {yearOption}
+              </option>
+            ))}
+          </select>
+        </div>
         <button type="submit">Calculate Salary</button>
       </form>
 

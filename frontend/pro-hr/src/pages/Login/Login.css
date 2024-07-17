@@ -5,7 +5,6 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  
 }
 
 .form-box {
@@ -18,7 +17,7 @@
   animation: fadeIn 1s ease;
 }
 
-.form-box h1 { 
+.form-box h1 {
   font-size: 28px;
   text-align: center;
   margin-bottom: 30px;
@@ -30,7 +29,7 @@
   margin-bottom: 20px;
 }
 
-.input-box input  {
+.input-box input {
   width: calc(100% - 20px);
   height: 40px;
   padding: 10px 20px;
@@ -55,6 +54,7 @@
   top: 50%;
   transform: translateY(-50%);
   color: #bdc3c7;
+  cursor: pointer;
 }
 
 .Remember-forgot {
@@ -70,7 +70,7 @@
   margin-right: auto;
 }
 
-.forgot-password  {
+.forgot-password {
   background-color: transparent;
   border: none;
   color: #cccccc;
@@ -101,6 +101,27 @@
   background-color: #303030;
 }
 
+.alert {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.alert.error {
+  color: #fe8040;
+}
+
+.alert.success {
+  color: #fe8040;
+}
+
+.alert.info {
+  background-color: #2196f3;
+  color: #fff;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .form-box {
@@ -123,7 +144,7 @@
 
 @media (max-width: 480px) {
   .form-box {
-    width: 250px;   
+    width: 250px;
   }
 
   .form-box h1 {

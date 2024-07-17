@@ -1,0 +1,281 @@
+/* General styles */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #121212;
+  color: #fff;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.form-box {
+  width: 350px;
+  padding: 40px;
+  background-color: #1c1a18;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  animation: fadeIn 1s ease;
+}
+
+.form-box h1 {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Employee Details styles */
+.view-employee {
+  padding: 20px;
+}
+
+.view-employee h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fe8040;
+  font-size: 32px;
+}
+
+.employee-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.employee-card {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  
+}
+
+.employee-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.profile-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 2px solid #f39c12;
+}
+
+
+.employee-info table {
+  width: auto; /* Adjust the width as needed */
+  border-collapse: collapse;
+  margin-bottom: 15px;
+  
+}
+
+.employee-info table, .employee-info th, .employee-info td {
+  border: none;
+}
+
+.employee-info th, .employee-info td {
+  padding: 5px;
+  text-align: left;
+}
+
+.employee-info th {
+  color: #fe8040;
+}
+
+.employee-info td {
+  color: #fff;
+}
+
+
+.employee-info td strong {
+  color: #fe8040;
+}
+.employee-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-update, .btn-delete {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-update {
+  background-color: #fe8040;
+  color: #fff;
+}
+
+.btn-delete {
+  background-color: #74b9ff;
+  color: #fff;
+}
+
+.btn-update:hover {
+  background-color: #74b9ff;
+}
+
+.btn-delete:hover {
+  background-color: #ff7675;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .employee-card {
+    padding: 15px;
+  }
+
+  .profile-picture {
+    width: 60px;
+    height: 60px;
+  }
+
+  .employee-actions {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .btn-update, .btn-delete {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .employee-details h2 {
+    font-size: 24px;
+  }
+
+  .employee-card {
+    padding: 10px;
+  }
+
+  .profile-picture {
+    width: 50px;
+    height: 50px;
+  }
+
+  .employee-info th, .employee-info td {
+    font-size: 14px;
+  }
+
+  .employee-actions .btn-update, .employee-actions .btn-delete {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}
+
+/* Update Employee Form Styles */
+.updemployee-form {
+  margin-top: 20px !important;
+  text-align: center;
+  width: 40%;
+  background-color: #1e1e1e;
+  padding:30px 50px 30px 50px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+}
+
+.updemployee-head {
+  color: #fe8040 !important;
+  margin-bottom: 20px;
+}
+
+.updemployee-input {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  color: #333;
+  width: 100%; /* Full width for inputs */
+}
+
+.updemployee-label {
+  margin-bottom: 5px;
+  color: #fe8040;
+  font-weight: bold;
+  display: block;
+  text-align: left;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.updemployee-button,
+.cancel-button {
+  width: 40%;
+  padding: 10px 0;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: auto;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.updemployee-button {
+  background-color: #fe8040;
+  color: #fff;
+}
+
+.updemployee-button:hover {
+  background-color: #303030;
+}
+
+.cancel-button {
+  background-color: #fe8040;
+  color: #fff;
+}
+
+.cancel-button:hover {
+  background-color: #303030;
+}
+
+.message {
+  margin: 20px 0;
+  padding: 10px;
+  text-align: center;
+  width: 100%;
+  color: #fe8040;
+}
+
+/* Responsive Styles for Update Employee Form */
+@media (max-width: 600px) {
+  .updemployee-form {
+    width: 80%;
+    padding: 15px;
+  }
+
+  .updemployee-input {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .updemployee-button,
+  .cancel-button {
+    width: 60%;
+    font-size: 14px;
+    padding: 8px 0;
+  }
+}
+

@@ -18,6 +18,7 @@ const SalarySlipGeneration = () => {
       const response = await axios.get('http://localhost:5001/api/employees');
       setEmployees(response.data);
     } catch (error) {
+      console.error('Error fetching employees:', error);
       setMessage('Error fetching employees');
     }
   };
@@ -48,8 +49,8 @@ const SalarySlipGeneration = () => {
 
       setMessage('Salary slip generated successfully');
     } catch (error) {
+      console.error('Error generating salary slip:', error);
       setMessage('Error generating salary slip');
-      console.error(error);
     }
   };
 
@@ -59,50 +60,54 @@ const SalarySlipGeneration = () => {
     return monthNames[monthNumber - 1];
   };
 
+  const currentYear = new Date().getFullYear();
+  const startYear = 2000;
+  const yearOptions = Array.from({ length: currentYear - startYear + 1 }, (_, index) => startYear + index);
+
   return (
     <div className="salary-calculation">
       <h2>Generate Salary Slip</h2>
       {message && <div className="message">{message}</div>}
       <form onSubmit={handleGenerateSalarySlip}>
-        <select
-          value={selectedEmployee}
-          onChange={(e) => setSelectedEmployee(e.target.value)}
-          required
-        >
-          <option value="">Select Employee</option>
-          {employees.map(emp => (
-            <option key={emp._id} value={emp.employeeId}>
-              {emp.name}
-            </option>
-          ))}
-        </select>
-        <select
-          value={month}
-          onChange={(e) => setMonth(e.target.value)}
-          required
-        >
-          <option value="">Select Month</option>
-          <option value="1">January</option>
-          <option value="2">February</option>
-          <option value="3">March</option>
-          <option value="4">April</option>
-          <option value="5">May</option>
-          <option value="6">June</option>
-          <option value="7">July</option>
-          <option value="8">August</option>
-          <option value="9">September</option>
-          <option value="10">October</option>
-          <option value="11">November</option>
-          <option value="12">December</option>
-        </select>
-        <input
-          type="number"
-          placeholder="Year"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-          min="2000"
-          required
-        />
+        <div className="salary-calc-head">
+          <select
+            className="salary-calc-placeholder"
+            value={selectedEmployee}
+            onChange={(e) => setSelectedEmployee(e.target.value)}
+            required
+          >
+            <option value="">Select Employee</option>
+            {employees.map(emp => (
+              <option key={emp._id} value={emp.employeeId}>
+                {emp.name}
+              </option>
+            ))}
+          </select>
+          <select
+            className="salary-calc-placeholder"
+            value={month}
+            onChange={(e) => setMonth(e.target.value)}
+            required
+          >
+            <option value="">Select Month</option>
+            {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
+              <option key={m} value={m}>{getMonthName(m)}</option>
+            ))}
+          </select>
+          <select
+            className="salary-calc-placeholder"
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            required
+          >
+            <option value="">Select Year</option>
+            {yearOptions.map((yearOption) => (
+              <option key={yearOption} value={yearOption}>
+                {yearOption}
+              </option>
+            ))}
+          </select>
+        </div>
         <button type="submit">Generate Salary Slip</button>
       </form>
     </div>

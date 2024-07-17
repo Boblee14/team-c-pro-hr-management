@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './employeedeatils.css'; 
+import './employeedetails.css';
 import { useNavigate } from 'react-router-dom';
 
 const EmployeeDetails = () => {
   const [employees, setEmployees] = useState([]);
-  // const [editMode, setEditMode] = useState(false);
-  // const [currentEmployee, setCurrentEmployee] = useState(null);
   const [message, setMessage] = useState(null);
-  const [messageType, setMessageType] = useState(''); 
+  const [messageType, setMessageType] = useState('');
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,25 +27,34 @@ const EmployeeDetails = () => {
       });
   };
 
-  const handleDelete = (id) => {
-    axios.delete(`http://localhost:5001/api/employees/${id}`)
+  const handleDelete = (employee) => {
+    setSelectedEmployee(employee);
+    setConfirmingDelete(true);
+  };
+
+  const confirmDelete = () => {
+    axios.delete(`http://localhost:5001/api/employees/${selectedEmployee._id}`)
       .then(response => {
         setMessage('Employee deleted successfully!');
         setMessageType('success');
+        setConfirmingDelete(false);
         fetchEmployees();
       })
       .catch(error => {
         setMessage('Error deleting employee');
         setMessageType('error');
+        setConfirmingDelete(false);
       });
   };
 
-  const handleUpdate = (employee) => {
-    // setEditMode(true);
-    // setCurrentEmployee(employee);
-    navigate(`/update-employee/${employee._id}`);
+  const cancelDelete = () => {
+    setSelectedEmployee(null);
+    setConfirmingDelete(false);
   };
 
+  const handleUpdate = (employee) => {
+    navigate(`/update-employee/${employee._id}`);
+  };
 
   return (
     <div className="employee-details view-employee">
@@ -55,31 +64,61 @@ const EmployeeDetails = () => {
           {message}
         </div>
       )}
-      <ul>
+      <ul className="employee-list">
         {employees.map(emp => (
           <li key={emp._id} className="employee-card">
-            {emp.profilePicture && (
-              <img
-                src={`../images/${emp.profilePicture}`}
-                alt={`${emp.name}'s profile`}
-                className="profile-picture"
-              />
-            )}
             <div className="employee-info">
-              <strong>Employee ID:</strong> {emp.employeeId}<br />
-              <strong>Name:</strong> {emp.name}<br />
-              <strong>Address:</strong> {emp.address}<br />
-              <strong>Role:</strong> {emp.role}<br />
-              <strong>Salary:</strong> {emp.salary}<br />
+              {emp.profilePicture && (
+                <img
+                  src={`../images/${emp.profilePicture}`}
+                  alt={`${emp.name}'s profile`}
+                  className="profile-picture"
+                />
+              )}
+              <table>
+                <tbody>
+                  <tr>
+                    <th><strong>Employee ID:</strong></th>
+                    <td>{emp.employeeId}</td>
+                  </tr>
+                  <tr>
+                    <th><strong>Name:</strong></th>
+                    <td>{emp.name}</td>
+                  </tr>
+                  <tr>
+                    <th><strong>Address:</strong></th>
+                    <td>{emp.address}</td>
+                  </tr>
+                  <tr>
+                    <th><strong>Role:</strong></th>
+                    <td>{emp.role}</td>
+                  </tr>
+                  <tr>
+                    <th><strong>Salary:</strong></th>
+                    <td>{emp.salary}</td>
+                  </tr>
+                </tbody>
+              </table>
               <div className="employee-actions">
                 <button className="btn-update" onClick={() => handleUpdate(emp)}>Update</button>
-                <button className="btn-delete" onClick={() => handleDelete(emp._id)}>Delete</button>
+                <button className="btn-delete" onClick={() => handleDelete(emp)}>Delete</button>
               </div>
             </div>
           </li>
         ))}
       </ul>
 
+      {confirmingDelete && selectedEmployee && (
+        <div className="popup">
+          <div className="popup-content">
+            <p>Are you sure you want to delete {selectedEmployee.name}?</p>
+            <div className="popup-buttons">
+              <button className="btn-confirm" onClick={confirmDelete}>Yes</button>
+              <button className="btn-cancel" onClick={cancelDelete}>No</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

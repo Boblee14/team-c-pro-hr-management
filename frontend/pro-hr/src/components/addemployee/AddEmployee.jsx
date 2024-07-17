@@ -13,7 +13,8 @@ const EmployeeDetails = () => {
     profilePicture: null
   });
   const [message, setMessage] = useState(null);
-  const [messageType, setMessageType] = useState(''); 
+  const [messageType, setMessageType] = useState(''); // Default message type
+
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -23,9 +24,9 @@ const EmployeeDetails = () => {
       .then(response => setEmployees(response.data))
       .catch(error => {
         setMessage('Error fetching employee details');
-        setMessageType('error');
+        setMessageType('error'); // Set message type to 'error' on error
       });
-  }; 
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -40,11 +41,10 @@ const EmployeeDetails = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
     const employeeExists = employees.some(emp => emp.employeeId === newEmployee.employeeId);
     if (employeeExists) {
       setMessage('Employee ID already exists. Please choose a unique ID.');
-      setMessageType('error');
+      setMessageType('error'); // Set message type to 'error' for duplicate ID
       return;
     }
 
@@ -61,23 +61,23 @@ const EmployeeDetails = () => {
         'Content-Type': 'multipart/form-data'
       }
     })
-    .then(response => {
-      setMessage('Employee added successfully!');
-      setMessageType('success');
-      fetchEmployees();
-      setNewEmployee({
-        employeeId: '',
-        name: '',
-        address: '',
-        role: '',
-        salary: '',
-        profilePicture: null
+      .then(response => {
+        setMessage('Employee added successfully!');
+        setMessageType('success'); // Set message type to 'success' on successful addition
+        fetchEmployees();
+        setNewEmployee({
+          employeeId: '',
+          name: '',
+          address: '',
+          role: '',
+          salary: '',
+          profilePicture: null
+        });
+      })
+      .catch(error => {
+        setMessage('Error in adding employee');
+        setMessageType('error'); // Set message type to 'error' on error
       });
-    })
-    .catch(error => {
-      setMessage('Error in adding employee');
-      setMessageType('error');
-    });
   };
 
   return (
@@ -89,59 +89,77 @@ const EmployeeDetails = () => {
             {message}
           </div>
         )}
-        <input 
-          className='addemployee-input'
-          type="text" 
-          name="employeeId" 
-          placeholder="Employee ID" 
-          value={newEmployee.employeeId} 
-          onChange={handleInputChange} 
-          required 
-        />
-        <input 
-          className='addemployee-input'
-          type="text" 
-          name="name" 
-          placeholder="Name" 
-          value={newEmployee.name} 
-          onChange={handleInputChange} 
-          required 
-        />
-        <input 
-          className='addemployee-input'
-          type="text" 
-          name="address" 
-          placeholder="Address" 
-          value={newEmployee.address} 
-          onChange={handleInputChange} 
-          required 
-        />
-        <input 
-          className='addemployee-input'
-          type="text" 
-          name="role" 
-          placeholder="Role" 
-          value={newEmployee.role} 
-          onChange={handleInputChange} 
-          required 
-        />
-        <input 
-          className='addemployee-input'
-          type="number" 
-          name="salary" 
-          placeholder="Salary Per/month" 
-          value={newEmployee.salary} 
-          onChange={handleInputChange} 
-          required 
-        />
-        <input 
-          className='addemployee-input'
-          type="file" 
-          name="profilePicture" 
-          accept="image/*" 
-          onChange={handleFileChange} 
-          required 
-        />
+        <div className="input-group">
+          <label className="addemployee-label">Employee ID</label>
+          <input
+            className='addemployee-input'
+            type="text"
+            name="employeeId"
+            placeholder="Employee ID"
+            value={newEmployee.employeeId}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className="input-group">
+          <label className="addemployee-label">Name</label>
+          <input
+            className='addemployee-input'
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={newEmployee.name}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className="input-group">
+          <label className="addemployee-label">Address</label>
+          <input
+            className='addemployee-input'
+            type="text"
+            name="address"
+            placeholder="Address"
+            value={newEmployee.address}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className="input-group">
+          <label className="addemployee-label">Role</label>
+          <input
+            className='addemployee-input'
+            type="text"
+            name="role"
+            placeholder="Role"
+            value={newEmployee.role}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className="input-group">
+          <label className="addemployee-label">Salary</label>
+          <input
+            className='addemployee-input'
+            type="number"
+            name="salary"
+            placeholder="Salary Per Month"
+            value={newEmployee.salary}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div className="input-group">
+          <label className="addemployee-label">Profile Picture</label>
+          <input
+            className='addemployee-input'
+            type="file"
+            name="profilePicture"
+            accept="image/*"
+            onChange={handleFileChange}
+            required
+          />
+        </div>
         <button className="addemployee-button" type="submit">Add Employee</button>
       </form>
     </div>
